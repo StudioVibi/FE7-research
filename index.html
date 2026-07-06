@@ -1,0 +1,6186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fire Emblem Artist Index — Blazing Blade &amp; Thracia 776</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #faf9f5;
+    color: #111;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    padding: 48px 56px 96px;
+    max-width: 980px;
+  }
+
+  /* ---------- animated underline (left -> right) ---------- */
+  .u {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+  .u::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.22s ease-out;
+  }
+  .u:hover::after,
+  .u.selected::after {
+    transform: scaleX(1);
+  }
+
+  /* ---------- header ---------- */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 32px;
+    margin-bottom: 56px;
+  }
+  h1 {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: #8a887f;
+    margin-top: 4px;
+  }
+  .controls {
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .filters {
+    font-size: 13px;
+    color: #55534c;
+  }
+  .filters .u { margin-left: 14px; }
+  .filters .u.selected { color: #111; }
+  .sortbar {
+    font-size: 13px;
+    color: #55534c;
+    margin-top: 10px;
+    position: relative;
+  }
+  .sort-options {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    background: #f3f2ec;
+    padding: 8px 14px;
+    text-align: right;
+    white-space: nowrap;
+    z-index: 2;
+  }
+  .sort-options.open { display: block; }
+  .sort-options .u {
+    display: block;
+    margin: 4px 0;
+    color: #55534c;
+  }
+  .sort-options .u.selected { color: #111; }
+
+  /* ---------- list ---------- */
+  .section-title {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #a5a399;
+    margin: 44px 0 16px;
+  }
+  .entry {
+    position: relative;
+    padding: 7px 0 7px 26px;
+  }
+  .star {
+    position: absolute;
+    left: 0;
+    top: 8px;
+    font-size: 13px;
+    color: #b5b3a8;
+    cursor: pointer;
+    visibility: hidden;
+    user-select: none;
+  }
+  .entry:hover .star { visibility: visible; }
+  .entry.faved .star {
+    visibility: visible;
+    color: #111;
+  }
+  .entry-name {
+    font-size: 16.5px;
+    color: #111;
+    font-weight: 500;
+  }
+  .entry-name .native {
+    font-weight: 400;
+    color: #8a887f;
+    font-size: 14px;
+    margin-left: 6px;
+  }
+  .tag {
+    font-size: 11.5px;
+    font-weight: 400;
+    color: #a5a399;
+    margin-left: 8px;
+    letter-spacing: 0.02em;
+  }
+  .dagger {
+    color: #a5a399;
+    font-weight: 400;
+    margin-left: 5px;
+    font-size: 14px;
+  }
+  .entry-links {
+    font-size: 13px;
+    color: #77756c;
+    margin-top: 1px;
+  }
+  .entry-links a { color: #77756c; }
+  .entry-links .sep { color: #c4c2b8; margin: 0 7px; }
+  .entry-note {
+    font-size: 12px;
+    color: #a5a399;
+    margin-top: 1px;
+  }
+  .empty {
+    color: #a5a399;
+    font-size: 13px;
+    margin-top: 40px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Fire Emblem Artist Index</h1>
+    <div class="subtitle">The Blazing Blade (FE7) &middot; Thracia 776 (FE5) &mdash; official staff, fan artists, communities</div>
+  </div>
+  <div class="controls">
+    <nav class="filters" id="filters"></nav>
+    <div class="sortbar">
+      <span class="u" id="sortToggle">sorted by <span id="sortLabel">A&ndash;Z</span> &#9662;</span>
+      <div class="sort-options" id="sortOptions"></div>
+    </div>
+  </div>
+</header>
+
+<main id="list"></main>
+
+<script>
+/* ============================================================
+   DATA — populated by research. Fields:
+   name, nativeName, category: official|artist|single|community,
+   games: [fe7|fe5], style: pixel|illustration|both|null,
+   deceased, singleTitle, links: [{label,url}], note
+   ============================================================ */
+const DATA = [
+ {
+  "name": "Sachiko Wada",
+  "nativeName": "ワダサチコ",
+  "category": "official",
+  "games": [
+   "fe7",
+   "fe5"
+  ],
+  "style": "both",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Twitter/X",
+    "url": "https://twitter.com/wadadot_Lv"
+   },
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/17077539"
+   },
+   {
+    "label": "Twitter/X",
+    "url": "https://x.com/wadadot_Lv"
+   }
+  ],
+  "note": "Main Design & Face Design: character designs, official/box illustrations and portrait art for FE7. Per her own tweets she also personally did face pixel art, map sprites, item icons and the GBA Myrmidon/Swordmaster battle animations; later directed FE: The Sacred Stones and still illustrates for FE Heroes/Cipher. | Character Graphic in FE5 (in-game portrait pixel art). Career at Intelligent Systems on every FE from FE5 to Radiant Dawn; director and character artist of The Sacred Stones, now a prolific FE Cipher/Heroes illustrator. X handle @wadadot_Lv confirmed via Twoucan mirror; account fetch blocked by X (unverified)."
+ },
+ {
+  "name": "Masahiro Higuchi",
+  "nativeName": "樋口雅大",
+  "category": "official",
+  "games": [
+   "fe7",
+   "fe5"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Kyoto Report profile",
+    "url": "http://kyoto-report.wikidot.com/masahiro-higuchi"
+   },
+   {
+    "label": "Nintendo interview (FE Engage)",
+    "url": "https://www.nintendo.com/us/whatsnew/ask-the-developer-vol-8-fire-emblem-engage-part-1/"
+   }
+  ],
+  "note": "Graphic Chief: led the graphics team on FE7. Intelligent Systems veteran since Genealogy of the Holy War (c.1995); rose to project manager (Awakening) and series producer (Fates, Three Houses, Engage, FE Heroes). No personal social accounts. | Graphic Chief of FE5, overseeing all in-game graphics after starting as a graphic designer on FE4. Rose to project manager (New Mystery) and has been the Fire Emblem series producer at Intelligent Systems since Fates through Engage/Heroes; kanji confirmed via official Nintendo interview pages."
+ },
+ {
+  "name": "Youko Nakai",
+  "nativeName": null,
+  "category": "official",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "MobyGames",
+    "url": "https://www.mobygames.com/person/260853/youko-nakai/"
+   }
+  ],
+  "note": "Event Graphic: in-game event/cutscene graphics. IS internal artist; did Battle Animation on FE6 (The Binding Blade) and was promoted to Unit Designer alongside Daisuke Izuka on FE: Path of Radiance. No known personal online presence. (MobyGames link unverified)"
+ },
+ {
+  "name": "Daisuke Izuka",
+  "nativeName": "井塚大介",
+  "category": "official",
+  "games": [
+   "fe7"
+  ],
+  "style": "both",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Twitter/X",
+    "url": "https://twitter.com/okome_di"
+   },
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/30226"
+   }
+  ],
+  "note": "Graphic Design (then a part-timer): drew the fire dragon illustrations and background/CG art by his own account. Later FE Shadow Dragon/New Mystery character illustrator, Fire Emblem Cipher art director, and freelance TCG/manga illustrator (Cardfight!! Vanguard, GATE)."
+ },
+ {
+  "name": "Minoru Noda",
+  "nativeName": null,
+  "category": "official",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [],
+  "note": "Graphic Support: assisting graphics work. IS internal staffer also credited on Graphic Support for FE6 (The Binding Blade) and later on FE: Path of Radiance. No verified kanji spelling or online presence found."
+ },
+ {
+  "name": "Eiji Kaneda",
+  "nativeName": "金田榮路",
+  "category": "official",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Twitter/X",
+    "url": "https://twitter.com/eijikaneda"
+   },
+   {
+    "label": "Japanese Wikipedia",
+    "url": "https://ja.wikipedia.org/wiki/%E9%87%91%E7%94%B0%E6%A6%AE%E8%B7%AF"
+   }
+  ],
+  "note": "Uncredited promotional/character illustration: FE6's official illustrator who, per Daisuke Izuka's testimony, also provided FE7 character artwork (e.g. Hector) and illustrated the FE7 novelizations; freelance Tokyo fantasy/TCG illustrator, later drew FE Awakening DLC and Cipher cards. Not listed in the in-game credit roll."
+ },
+ {
+  "name": "Yasuo Inoue",
+  "nativeName": "井上泰夫",
+  "category": "official",
+  "games": [
+   "fe7",
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Kyoto Report profile",
+    "url": "http://kyoto-report.wikidot.com/yasuo-inoue"
+   },
+   {
+    "label": "MobyGames",
+    "url": "https://www.mobygames.com/person/50689/yasuo-inoue/"
+   }
+  ],
+  "note": "Artwork (Nintendo side): package, manual and logo design. Kyoto Seika University graduate and longtime Nintendo R&D1/design-team artist (Metroid II onward, F-Zero: Maximum Velocity pilot designs, Metroid logo/manual work). (MobyGames link unverified) | Art Work credit in FE5 (logo/package/manual design). Nintendo R&D1 graphic artist (b. 1969, Kyoto Seika Univ.) whose credits run from Metroid II and Super Metroid to F-Zero: Maximum Velocity pilot designs and Xenoblade Chronicles X manuals; also Art Work on FE4 and FE6. MobyGames link from search, fetch blocked (unverified)."
+ },
+ {
+  "name": "Sachiko Nakamichi",
+  "nativeName": "中道幸呼",
+  "category": "official",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Kyoto Report profile",
+    "url": "http://kyoto-report.wikidot.com/sachiko-nakamichi"
+   },
+   {
+    "label": "MobyGames",
+    "url": "https://www.mobygames.com/person/94266/sachiko-nakamichi/"
+   }
+  ],
+  "note": "Artwork (Nintendo side): package/manual design. Nintendo package designer since 1998 credited across Metroid Fusion/Zero Mission, Wario Land 3/4, Kirby, Animal Crossing and many other Nintendo titles. No personal art accounts found. (MobyGames link unverified)"
+ },
+ {
+  "name": "Fumiko Miyamoto",
+  "nativeName": "宮本文子",
+  "category": "official",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Kyoto Report profile",
+    "url": "http://kyoto-report.wikidot.com/fumiko-miyamoto"
+   }
+  ],
+  "note": "Artwork (Nintendo side): manual/packaging artwork. Joined Nintendo R&D1 in 2000 as an artwork designer (first credit: Pokemon Puzzle Challenge manual); moved into graphic/art supervision in later years (Metroid Dread art supervisor, Xenoblade 3 character supervisor)."
+ },
+ {
+  "name": "Takashi Ito",
+  "nativeName": null,
+  "category": "official",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [],
+  "note": "Artwork (Nintendo side): package/manual artwork team member. Common name; no reliable further career details, kanji spelling, or online presence could be verified beyond the FE7 credit roll."
+ },
+ {
+  "name": "Mayumi Hirota",
+  "nativeName": "広田麻由美",
+  "category": "official",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": true,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Wikipedia (JA)",
+    "url": "https://ja.wikipedia.org/wiki/%E5%BA%83%E7%94%B0%E9%BA%BB%E7%94%B1%E7%BE%8E"
+   }
+  ],
+  "note": "Character Design for FE5: drew all official character designs/illustrations and package art. Former animator (Ghibli's Ocean Waves, Fushigi Yugi, FE: Mystery of the Emblem OVA); entered the series via the FE: Treasure art book, later designed Tear Ring Saga. Death reported December 13, 2018 (JA Wikipedia and Japanese news roundups)."
+ },
+ {
+  "name": "Yuka Hongou",
+  "nativeName": null,
+  "category": "official",
+  "games": [
+   "fe5"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "IMDb",
+    "url": "https://www.imdb.com/name/nm10694907/"
+   }
+  ],
+  "note": "Character Graphic in FE5 alongside Sachiko Wada (portrait/face pixel art). Only other known credit is a support/special-thanks listing in FE6; Japanese fan staff research renders her name only in kana (ほんごうゆか), kanji unknown. IMDb page exists but blocked fetching (unverified)."
+ },
+ {
+  "name": "Ryou Hirata",
+  "nativeName": "平田亮",
+  "category": "official",
+  "games": [
+   "fe5"
+  ],
+  "style": "both",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Twitter/X",
+    "url": "https://twitter.com/ryo_hirata_v"
+   },
+   {
+    "label": "Anime News Network",
+    "url": "https://www.animenewsnetwork.com/encyclopedia/people.php?id=79092"
+   }
+  ],
+  "note": "Battle Animation in FE5 (battle sprite animation, done around age 20). Later character designer of the GBA/DS Advance Wars games and battle unit designer on Sacred Stones; left Intelligent Systems in 2006 and now freelances in anime (prop design on Bungo Stray Dogs, Urusei Yatsura etc.). Kanji per Japanese fan staff research; X handle from search results (unverified)."
+ },
+ {
+  "name": "Maki Takemori",
+  "nativeName": "竹森万記",
+  "category": "official",
+  "games": [
+   "fe5"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [],
+  "note": "Battle Animation in FE5 with Ryou Hirata; also credited for Battle Animation on FE6 The Binding Blade. Internal Intelligent Systems artist with no found online presence; kanji rendering per Japanese fan staff research (god-bird.net)."
+ },
+ {
+  "name": "Junko Umehara",
+  "nativeName": null,
+  "category": "official",
+  "games": [
+   "fe5"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [],
+  "note": "Map Design in FE5 (map/terrain tile graphics). No credits found on later FE games (FE6 map design passed to Sumiko Miki) and no online presence located; Japanese fan sources render her name only in kana (うめはらじゅんこ)."
+ },
+ {
+  "name": "Taeko Kaneda",
+  "nativeName": "金田妙子",
+  "category": "official",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Wikipedia (JA)",
+    "url": "https://ja.wikipedia.org/wiki/%E9%87%91%E7%94%B0%E5%A6%99%E5%AD%90"
+   }
+  ],
+  "note": "Art Work credit in FE5 (package/manual/print design). Intelligent Systems staffer who became a key designer after Kaga left: Art Director on FE6, co-director of FE7 The Blazing Blade, game design on Path of Radiance and director of Radiant Dawn; no personal web presence found."
+ },
+ {
+  "name": "Fujiko Nomura",
+  "nativeName": "野村扶二子",
+  "category": "official",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Kyoto Report profile",
+    "url": "http://kyoto-report.wikidot.com/fujiko-nomura"
+   },
+   {
+    "label": "MobyGames",
+    "url": "https://www.mobygames.com/person/51081/fujiko-nomura/"
+   }
+  ],
+  "note": "Art Work credit in FE5. Nintendo (SPD) graphic artist specializing in packaging/manual artwork, credited on many Nintendo titles including FE4, Wario Land, Game & Watch Gallery 2, Advance Wars and Pokemon Emerald; no personal accounts found. MobyGames link from search, fetch blocked (unverified)."
+ },
+ {
+  "name": "pumvilla",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/pumvilla"
+   },
+   {
+    "label": "Twitter",
+    "url": "https://twitter.com/pumvilla"
+   },
+   {
+    "label": "Dual-wielding Lyn",
+    "url": "https://www.deviantart.com/pumvilla/art/Dual-wielding-Lyn-758499216"
+   },
+   {
+    "label": "Countess Reglay (Louise)",
+    "url": "https://www.deviantart.com/pumvilla/art/Countess-Reglay-671601535"
+   }
+  ],
+  "note": "Verified profile; multiple FE7 pieces (Lyn, Louise, Hector-and-Florina gift art), admin of Artists-of-Askr FE group"
+ },
+ {
+  "name": "manatiki",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7",
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/manatiki"
+   },
+   {
+    "label": "Bluesky",
+    "url": "https://bsky.app/profile/manaland.bsky.social"
+   },
+   {
+    "label": "Carrd",
+    "url": "https://manatiki.carrd.co"
+   },
+   {
+    "label": "SS: Eliwood and Hector",
+    "url": "https://www.deviantart.com/manatiki/art/SS-Eliwood-and-Hector-728763704"
+   },
+   {
+    "label": "Nino made cookies",
+    "url": "https://www.deviantart.com/manatiki/art/Gift-Nino-made-cookies-for-you-730773786"
+   },
+   {
+    "label": "Gift: Eyvel",
+    "url": "https://www.deviantart.com/manatiki/art/Gift-Eyvel-700893832"
+   },
+   {
+    "label": "Lifis annoying Shiva",
+    "url": "https://www.deviantart.com/manatiki/art/Lifis-annoying-Shiva-681723600"
+   }
+  ],
+  "note": "Verified self-described Fire Emblem fan, 1.3K watchers, multiple FE7 works | Multiple FE5 works including deep cuts (Eyvel, Lifis, Shiva); both verified on live tag pages."
+ },
+ {
+  "name": "reidiantdawn",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/reidiantdawn"
+   },
+   {
+    "label": "Tumblr",
+    "url": "https://reidiantdawn.tumblr.com"
+   },
+   {
+    "label": "Twitter",
+    "url": "https://twitter.com/reidiantdawn"
+   },
+   {
+    "label": "Rekka no Genderbend",
+    "url": "https://www.deviantart.com/reidiantdawn/art/Fire-Emblem-Rekka-no-Genderbend-695927523"
+   },
+   {
+    "label": "Dragon Descendants (Ninian/Nils)",
+    "url": "https://www.deviantart.com/reidiantdawn/art/Dragon-Descendants-683361595"
+   }
+  ],
+  "note": "Verified profile; 3+ FE7 pieces incl. SoV-style Nino; more active on Twitter"
+ },
+ {
+  "name": "Eeveetachi",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/eeveetachi"
+   },
+   {
+    "label": "FE gallery",
+    "url": "https://www.deviantart.com/eeveetachi/gallery/57479362/fire-emblem"
+   },
+   {
+    "label": "I like it when you laugh, Ninian",
+    "url": "https://www.deviantart.com/eeveetachi/art/I-like-it-when-you-laugh-Ninian-773277117"
+   },
+   {
+    "label": "Like a fairytale",
+    "url": "https://www.deviantart.com/eeveetachi/art/Like-a-fairytale-585667008"
+   }
+  ],
+  "note": "42-work Fire Emblem gallery; FE7 pieces incl. Ninian art and an Eliwood shimeji"
+ },
+ {
+  "name": "Eldervi",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/eldervi"
+   },
+   {
+    "label": "ArtStation",
+    "url": "https://eldervi.artstation.com"
+   },
+   {
+    "label": "Eliwood x Ninian",
+    "url": "https://www.deviantart.com/eldervi/art/Fire-Emblem-Eliwood-x-Ninian-764078046"
+   },
+   {
+    "label": "Hector",
+    "url": "https://www.deviantart.com/eldervi/art/Fire-Emblem-Hector-715870890"
+   },
+   {
+    "label": "Eliwood & Ninian (ArtStation)",
+    "url": "https://www.artstation.com/artwork/rRKolE"
+   }
+  ],
+  "note": "Cross-platform (DA + ArtStation), painterly realistic FE7 lords and Ninian"
+ },
+ {
+  "name": "vietti03",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7",
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/vietti03"
+   },
+   {
+    "label": "Ninian (Blazing Blade)",
+    "url": "https://www.deviantart.com/vietti03/art/Ninian-Fire-Emblem-The-Blazing-Blade-1289319474"
+   },
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/vietti03/art/Lara-Fire-Emblem-Thracia-776-1315309217"
+   }
+  ],
+  "note": "Four recent Ninian (Blazing Blade) pieces found in DA search | Lara piece; listed on DA 'thracia 776' search page."
+ },
+ {
+  "name": "KurohoKusoku",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/kurohokusoku"
+   },
+   {
+    "label": "Ninian",
+    "url": "https://www.deviantart.com/kurohokusoku/art/Ninian-Fire-Emblem-1333492161"
+   }
+  ],
+  "note": "Three separate Ninian pieces (2024-2025) in DA search results"
+ },
+ {
+  "name": "CarmenMCS",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/carmenmcs"
+   },
+   {
+    "label": "Elibe Lords Sketch",
+    "url": "https://www.deviantart.com/carmenmcs/art/Fire-Emblem-Elibe-Lords-Sketch-738382241"
+   },
+   {
+    "label": "Lyn and Florina",
+    "url": "https://www.deviantart.com/carmenmcs/art/Fire-Emblem-Lyn-and-Florina-720896615"
+   }
+  ],
+  "note": "Multiple FE7 pieces (Elibe lords, Lyn/Florina)"
+ },
+ {
+  "name": "Autumn-Sacura",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/autumn-sacura"
+   },
+   {
+    "label": "Hector x Eliwood",
+    "url": "https://www.deviantart.com/autumn-sacura/art/Hector-x-Eliwood-1290372584"
+   },
+   {
+    "label": "Lyn x Florina revisited",
+    "url": "https://www.deviantart.com/autumn-sacura/art/Lyn-x-Florina-revisited-1285133829"
+   }
+  ],
+  "note": "Active 2025, multiple FE7 ship pieces"
+ },
+ {
+  "name": "Sturmfrost",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/sturmfrost"
+   },
+   {
+    "label": "Hectors Abschied",
+    "url": "https://www.deviantart.com/sturmfrost/art/Hectors-Abschied-1267697652"
+   },
+   {
+    "label": "Fire Witch Hat Atelier Emblem (Nino)",
+    "url": "https://www.deviantart.com/sturmfrost/art/Fire-Witch-Hat-Atelier-Emblem-1343974576"
+   }
+  ],
+  "note": "Recent FE7 works (Hector, Nino crossover); appears across multiple FE7 character searches"
+ },
+ {
+  "name": "nishikuru",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/nishikuru"
+   },
+   {
+    "label": "Lyn",
+    "url": "https://www.deviantart.com/nishikuru/art/Lyn-Fire-Emblem-670398357"
+   },
+   {
+    "label": "Ninian",
+    "url": "https://www.deviantart.com/nishikuru/art/Ninian-Fire-Emblem-746924838"
+   }
+  ],
+  "note": "Separate Lyn and Ninian pieces on DA"
+ },
+ {
+  "name": "Nyankyuu",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/nyankyuu"
+   },
+   {
+    "label": "Nino",
+    "url": "https://www.deviantart.com/nyankyuu/art/Nino-725535240"
+   },
+   {
+    "label": "Day 19: Bride Ninian",
+    "url": "https://www.deviantart.com/nyankyuu/art/Day-19-Bride-Ninian-773493444"
+   }
+  ],
+  "note": "Multiple FE7 pieces (Nino, Ninian) from drawing-challenge sets"
+ },
+ {
+  "name": "caringcarrot",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "both",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/caringcarrot"
+   },
+   {
+    "label": "Lyn and Hector",
+    "url": "https://www.deviantart.com/caringcarrot/art/Lyn-and-Hector-Fire-Emblem-774038837"
+   },
+   {
+    "label": "FE Custom mug GBA Sprite Sheet",
+    "url": "https://www.deviantart.com/caringcarrot/art/Fire-Emblem-Custom-mug-GBA-Sprite-Sheet-804177772"
+   }
+  ],
+  "note": "Does both illustration (Lyn/Hector) and GBA-style portrait pixel work — strong style match"
+ },
+ {
+  "name": "Granetdud (Andrew / Schluebot)",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Tumblr",
+    "url": "https://granetdud.tumblr.com"
+   },
+   {
+    "label": "FE7 portrait redraw project",
+    "url": "https://granetdud.tumblr.com/post/708008017931763712/i-redrew-every-character-portrait-from-fire"
+   },
+   {
+    "label": "Twitter",
+    "url": "https://twitter.com/Schluebot"
+   }
+  ],
+  "note": "Verified: redrew every FE7 character portrait (Lyn, Hector, Eliwood, Ninian, Florina, Guy...); takes commissions as @Schluebot"
+ },
+ {
+  "name": "Yance (yancadoodles)",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Tumblr",
+    "url": "https://yancadoodles.tumblr.com"
+   },
+   {
+    "label": "GBA mini portrait sprites post",
+    "url": "https://yancadoodles.tumblr.com/post/803854430299684864/some-more-fe-gba-mini-portrait-sprites-i-did"
+   },
+   {
+    "label": "Carrd",
+    "url": "https://yancadoodles.carrd.co"
+   }
+  ],
+  "note": "Makes FE GBA-style mini portrait sprites across the series; sells them as stickers; open for commissions (unverified)"
+ },
+ {
+  "name": "Squidjees",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Fire Emblem Universe",
+    "url": "https://feuniverse.us/t/fe7-fire-emblem-the-blazing-blade-graphical-overhaul-wip-feedback-appreciated/31934"
+   }
+  ],
+  "note": "Verified: leads a full FE7 graphical overhaul (portraits, battle anims, tilesets) on FEUniverse — deep command of the FE7 pixel look"
+ },
+ {
+  "name": "BuskHusker",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "FEU GBA portraiting tutorials",
+    "url": "https://feuniverse.us/t/buskhuskers-gba-portraiting-tutorials/10927"
+   }
+  ],
+  "note": "GBA portrait specialist; wrote FEU portraiting tutorials and made a Hector portrait used in the FE7 overhaul (unverified)"
+ },
+ {
+  "name": "ThorStygian",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/thorstygian"
+   },
+   {
+    "label": "Old Custom FE GBA portraits",
+    "url": "https://www.deviantart.com/thorstygian/art/Old-Custom-FE-GBA-portraits-891010019"
+   }
+  ],
+  "note": "Splices/customs of GBA FE facial sprites, offers commissions (unverified)"
+ },
+ {
+  "name": "Zeldacrafter64",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/zeldacrafter64"
+   },
+   {
+    "label": "Pixel Edit - Fire Emblem Style",
+    "url": "https://www.deviantart.com/zeldacrafter64/art/Pixel-Edit-Fire-Emblem-Style-734781067"
+   }
+  ],
+  "note": "Edits FE6/7/8 sprites into original GBA-style characters (unverified)"
+ },
+ {
+  "name": "AU_pixel",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "itch.io",
+    "url": "https://au-pixel.itch.io/heroes99"
+   },
+   {
+    "label": "Instagram",
+    "url": "https://www.instagram.com/au_pixel/"
+   }
+  ],
+  "note": "Verified: HEROES 99 asset pack explicitly inspired by GBA Fire Emblem — fully animated FE-style sprites, commercial-grade"
+ },
+ {
+  "name": "Shape-Forest",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/shape-forest"
+   },
+   {
+    "label": "limstella",
+    "url": "https://www.deviantart.com/shape-forest/art/limstella-old-928304135"
+   },
+   {
+    "label": "Canas",
+    "url": "https://www.deviantart.com/shape-forest/art/Canas-940072358"
+   }
+  ],
+  "note": "Draws deep-cut FE7 characters (Limstella, Canas)"
+ },
+ {
+  "name": "leonmandala",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7",
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/leonmandala"
+   },
+   {
+    "label": "The Pious Mage, Nino",
+    "url": "https://www.deviantart.com/leonmandala/art/Fire-Emblem-The-Pious-Mage-Nino-743321232"
+   },
+   {
+    "label": "Heroic Spirit NINO",
+    "url": "https://www.deviantart.com/leonmandala/art/Fire-Emblem-Fate-Heroic-Spirit-NINO-710431198"
+   },
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/leonmandala/art/Fire-Emblem-The-Nordion-Princess-Nanna-767308357"
+   }
+  ],
+  "note": "Two polished Nino pieces on DA | Nanna illustration; verified on fe5 tag page, appears repeatedly in FE recommendations."
+ },
+ {
+  "name": "serennes-art",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Tumblr",
+    "url": "https://www.tumblr.com/serennes-art"
+   },
+   {
+    "label": "Pirate FE7 AU post",
+    "url": "https://www.tumblr.com/serennes-art/620487660390187008/piratesailing-fe7-au-spawned-from-the-mermay"
+   }
+  ],
+  "note": "FE7 pirate/sailing AU with Eliwood, Hector, Lyn, Ninian, Nils plus Mermay Ninian; blog login-walled (unverified)"
+ },
+ {
+  "name": "diadoescomics (Dia)",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Tumblr",
+    "url": "https://diadoescomics.tumblr.com"
+   },
+   {
+    "label": "Ninian fainting comic",
+    "url": "https://diadoescomics.tumblr.com/post/184558224278/you-know-how-ninian-faints-all-the-time-in-fe7"
+   }
+  ],
+  "note": "Comics from a Blazing Blade playthrough featuring Eliwood, Ninian, Lyn, Hector, Nils (unverified)"
+ },
+ {
+  "name": "tactician-in-green",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Tumblr",
+    "url": "https://www.tumblr.com/tactician-in-green"
+   }
+  ],
+  "note": "Fire Emblem fanart/comic blog with FE7 character content per search indexing (unverified)"
+ },
+ {
+  "name": "hounclooms",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "family!!",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/hounclooms/art/family-687967554"
+   }
+  ],
+  "note": "Eliwood/Ninian family piece surfacing in both fe7 and ninian tags"
+ },
+ {
+  "name": "AztoDio",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7",
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/aztodio/art/Blade-Lord-Lyn-Spirited-Noblewoman-fanart-766979852"
+   },
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/aztodio/art/Sword-Cavalry-Nanna-Fire-Emblem-Thracia-776-739783466"
+   },
+   {
+    "label": "ArtStation",
+    "url": "https://www.artstation.com/artwork/JNrqz"
+   },
+   {
+    "label": "Profile",
+    "url": "https://www.deviantart.com/aztodio"
+   }
+  ],
+  "note": "Polished Blade Lord Lyn illustration | Polished Nanna illustration cross-posted to DA and ArtStation; large FE gallery but this is the confirmed FE5 piece. | Works: \"Blade Lord Lyn - Spirited Noblewoman fanart\"; \"Sword Cavalry Nanna - Fire Emblem Thracia 776\""
+ },
+ {
+  "name": "Pure-Resonance",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "The Lords of Lycia",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/pure-resonance/art/The-Lords-of-Lycia-565616803"
+   }
+  ],
+  "note": "Group piece of the three FE7 lords"
+ },
+ {
+  "name": "Escafa",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Lyndis",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/escafa/art/Lyndis-877754972"
+   }
+  ],
+  "note": "Lyndis portrait from blazingblade tag"
+ },
+ {
+  "name": "Solchan",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "[Fire emblem] Lyndis",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/solchan/art/Fire-emblem-Lyndis-739927433"
+   }
+  ],
+  "note": "Appears in both blazingblade and lyndis tags"
+ },
+ {
+  "name": "formentera-lady",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Fire Emblem: Lyndis",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/formentera-lady/art/Fire-Emblem-Lyndis-669183953"
+   }
+  ],
+  "note": "Lyndis illustration recurring across FE7 tags"
+ },
+ {
+  "name": "BurntGreenTea",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Lyndis",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/burntgreentea/art/Lyndis-732481101"
+   }
+  ],
+  "note": "From lyndis tag"
+ },
+ {
+  "name": "SaBasse",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Lady of the Plains",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/sabasse/art/Lady-of-the-Plains-677806650"
+   }
+  ],
+  "note": "Lyn piece from lyndis tag"
+ },
+ {
+  "name": "kingdukeee",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Lyn!",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/kingdukeee/art/Lyn-749352384"
+   }
+  ],
+  "note": "From lyndis tag"
+ },
+ {
+  "name": "PhiphiAuThon",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Everyone is Lyn",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/phiphiauthon/art/Everyone-is-Lyn-769372616"
+   }
+  ],
+  "note": "Playful multi-Lyn piece"
+ },
+ {
+  "name": "xwanwan",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Lyn, Hector and Eliwood (Fire Emblem)",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/xwanwan/art/Lyn-Hector-and-Eliwood-Fire-Emblem-Fanart-669135976"
+   }
+  ],
+  "note": "Chibi trio of the FE7 lords (unverified)"
+ },
+ {
+  "name": "Thaumana",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Library Encounter (Erk x Serra)",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/thaumana/art/Library-Encounter-Erk-x-Serra-Fire-Emblem-853743932"
+   }
+  ],
+  "note": "Erk/Serra piece appearing in multiple FE7 tags"
+ },
+ {
+  "name": "Edo--sama",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Erk [FE7]",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/edo--sama/art/Erk-FE7-648705389"
+   }
+  ],
+  "note": "Erk portrait in fe7 and fireemblem7 tags"
+ },
+ {
+  "name": "Vekneim",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Ninian from Fire Emblem 7",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/vekneim/art/Ninian-from-Fire-Emblem-7-710101380"
+   }
+  ],
+  "note": "From fireemblem7 tag"
+ },
+ {
+  "name": "chie22",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Eliwood - Marquess of Pherae",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/chie22/art/Eliwood-Marquess-of-Pherae-756844408"
+   }
+  ],
+  "note": "From eliwood search"
+ },
+ {
+  "name": "Libbleslie",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Dancer Of The Blazing Blade",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/libbleslie/art/Dancer-Of-The-Blazing-Blade-772981888"
+   }
+  ],
+  "note": "Ninian piece from ninian tag"
+ },
+ {
+  "name": "adricarra",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Bridal Ninian",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/adricarra/art/Bridal-Ninian-748632027"
+   }
+  ],
+  "note": "FEH bridal Ninian (FE7 character, in scope)"
+ },
+ {
+  "name": "haiyun",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "FE: Snowdrop Ninian",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/haiyun/art/FE-Snowdrop-Ninian-803744820"
+   }
+  ],
+  "note": "From ninian tag"
+ },
+ {
+  "name": "zipskyblue",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "NINIAN!",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/zipskyblue/art/NINIAN-569387362"
+   }
+  ],
+  "note": "From ninian tag"
+ },
+ {
+  "name": "SonoranStudios",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Ninian (Fire Emblem Fanart)",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/sonoranstudios/art/Ninian-Fire-Emblem-Fanart-754211296"
+   }
+  ],
+  "note": "(unverified)"
+ },
+ {
+  "name": "levenark",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "FE7 - Ninian sketch",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/levenark/art/FE7-Ninian-sketch-599184161"
+   }
+  ],
+  "note": "Appears in fireemblem7 and ninian tags"
+ },
+ {
+  "name": "GoGoDoodles",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7",
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/gogodoodles/art/648-Hector-Fire-Emblem-961432902"
+   },
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/gogodoodles/art/642-Leif-Fire-Emblem-922403759"
+   }
+  ],
+  "note": "From long-running daily doodle series | Leif entry in a numbered daily-doodle series; found via search index (unverified). | Works: \"648. Hector (Fire Emblem)\"; \"642. Leif (Fire Emblem)\""
+ },
+ {
+  "name": "LeahFoxDen",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7",
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/leahfoxden/art/Hector-Marquess-of-Ostia-751776902"
+   },
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/leahfoxden/art/COM-Leif-768719896"
+   }
+  ],
+  "note": "From hector search | Leif commission; verified on thracia776 tag page. | Works: \"Hector: Marquess of Ostia\"; \"-COM- Leif\""
+ },
+ {
+  "name": "jadesnapart",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Comic commission of Lyn, Eliwood, and Hector",
+  "links": [
+   {
+    "label": "Tumblr",
+    "url": "https://jadesnapart.tumblr.com/post/169627700388/comic-commission-of-lyn-eliwood-and-hector-lyn"
+   }
+  ],
+  "note": "FE7 lords comic on Tumblr (unverified)"
+ },
+ {
+  "name": "Cowmarillion",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Lyn / Lyndis - Fire Emblem: The Blazing Blade",
+  "links": [
+   {
+    "label": "ArtStation",
+    "url": "https://www.artstation.com/artwork/PeLLPL"
+   }
+  ],
+  "note": "Krita-painted Lyn, one of few explicit FE7 pieces on ArtStation (unverified)"
+ },
+ {
+  "name": "cathreen-and-her-headband",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "FE GBA-style pixel piece (Eliwood, Hector, Lyn, Ninian)",
+  "links": [
+   {
+    "label": "Tumblr",
+    "url": "https://cathreen-and-her-headband.tumblr.com/post/623033282776465408/i-finished-fe6-last-week-and-wanted-to-try-making"
+   }
+  ],
+  "note": "Pixel art of FE7 cast; blog is login-walled (unverified)"
+ },
+ {
+  "name": "Esliminator",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "Eliwood, Hector, and Lyn Sprites *Updated*",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/esliminator/art/Eliwood-Hector-and-Lyn-Sprites-Updated-776976127"
+   }
+  ],
+  "note": "Custom sprites of the three FE7 lords (unverified)"
+ },
+ {
+  "name": "PixelHenkie",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "Fire Emblem GBA Portrait",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/pixelhenkie/art/Fire-Emblem-GBA-Portrait-848586699"
+   }
+  ],
+  "note": "Commission mixing FE GBA palette with own style — style-match candidate (unverified)"
+ },
+ {
+  "name": "alexmauricio407",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "florina fire emblem sprite",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/alexmauricio407/art/florina-fire-emblem-sprite-758553873"
+   }
+  ],
+  "note": "Florina pixel sprite"
+ },
+ {
+  "name": "nuvosha",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Fire Emblem 7: Nino",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/nuvosha/art/Fire-Emblem-7-Nino-157456864"
+   }
+  ],
+  "note": "Older Nino piece from nino search"
+ },
+ {
+  "name": "BMDraws",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Lyn (Fire Emblem: The Blazing Blade)",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/bmdraws/art/Lyn-Fire-Emblem-The-Blazing-Blade-1302228985"
+   }
+  ],
+  "note": "Recent (2025) Lyn piece"
+ },
+ {
+  "name": "XenicesArtist101",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Fire Emblem Blazing Blade: Lyn",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/xenicesartist101/art/Fire-Emblem-Blazing-Blade-Lyn-959153093"
+   }
+  ],
+  "note": "(unverified)"
+ },
+ {
+  "name": "laledraws",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Florina - Fire Emblem",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/laledraws/art/Florina-Fire-Emblem-808636556"
+   }
+  ],
+  "note": "From florina search"
+ },
+ {
+  "name": "Lunamaria-Estel",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Lyn and Florina - Fire Emblem",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/lunamaria-estel/art/Lyn-and-Florina-Fire-Emblem-787753361"
+   }
+  ],
+  "note": "Appears in both lyndis tag and florina search"
+ },
+ {
+  "name": "Wanini",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Lyn",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/wanini/art/Lyn-739003254"
+   }
+  ],
+  "note": "From lyndis tag"
+ },
+ {
+  "name": "EmbyArts",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "LYNDIS",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/embyarts/art/LYNDIS-903046434"
+   }
+  ],
+  "note": "From lyndis tag"
+ },
+ {
+  "name": "Saij-Spellhart",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Uther with reading glasses and Lyn",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/saij-spellhart/art/Uther-with-reading-glasses-and-Lyn-1127529671"
+   }
+  ],
+  "note": "Rare Uther content, from blazingblade tag"
+ },
+ {
+  "name": "GeminiTheSpy",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Matthew Anniversary/Child Theme!",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/geminithespy/art/Matthew-Anniversary-Child-Theme-885633166"
+   }
+  ],
+  "note": "Matthew piece from blazingblade tag"
+ },
+ {
+  "name": "Inkfy",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Commission - Eliwood and Ninian",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/inkfy/art/Commission-Eliwood-and-Ninian-897929757"
+   }
+  ],
+  "note": "Commission-quality Eliwood/Ninian from ninian tag"
+ },
+ {
+  "name": "Manakyr",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Believe In Yourself",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/manakyr/art/Believe-In-Yourself-671061649"
+   }
+  ],
+  "note": "Ninian piece from ninian tag"
+ },
+ {
+  "name": "PaintbrushInMyCoffee",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Dragon Dancer",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/paintbrushinmycoffee/art/Dragon-Dancer-881891287"
+   }
+  ],
+  "note": "Ninian piece from ninian tag"
+ },
+ {
+  "name": "yotsmungand90",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/yotsmungand90"
+   },
+   {
+    "label": "Finn Portrait",
+    "url": "https://www.deviantart.com/yotsmungand90/art/Fire-Emblem-Thracia-775-Fin-Portrait-834980118"
+   },
+   {
+    "label": "Eyrios And Carrion",
+    "url": "https://www.deviantart.com/yotsmungand90/art/Fire-Emblem-Thracia-776-Eyrios-And-Carrion-835159926"
+   }
+  ],
+  "note": "Clear FE5 specialist: Finn, two Nanna pieces, and deep-cut Eyrios/Carrion colored illustrations; verified via deviation page."
+ },
+ {
+  "name": "MarthDew",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/marthdew"
+   },
+   {
+    "label": "Leif",
+    "url": "https://www.deviantart.com/marthdew/art/Leif-959667606"
+   },
+   {
+    "label": "Mareeta",
+    "url": "https://www.deviantart.com/marthdew/art/Mareeta-897792618"
+   }
+  ],
+  "note": "55-work Fire Emblem gallery including Leif and Mareeta; both FE5 pieces verified on live tag pages."
+ },
+ {
+  "name": "peevthesheev",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/peevthesheev"
+   },
+   {
+    "label": "Leif, Prince of Leonster",
+    "url": "https://www.deviantart.com/peevthesheev/art/Leif-Prince-of-Leonster-739941217"
+   },
+   {
+    "label": "Mareeta, the Blade's Pawn",
+    "url": "https://www.deviantart.com/peevthesheev/art/Mareeta-the-Blade-s-Pawn-800111778"
+   }
+  ],
+  "note": "Dedicated 74-work Jugdral gallery folder; Leif and Mareeta pieces verified on tag pages."
+ },
+ {
+  "name": "treijim",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/treijim"
+   },
+   {
+    "label": "Prince of Leonster",
+    "url": "https://www.deviantart.com/treijim/art/Prince-of-Leonster-1157429719"
+   },
+   {
+    "label": "Live Together, Die Together",
+    "url": "https://www.deviantart.com/treijim/art/Live-Together-Die-Together-1222153432"
+   }
+  ],
+  "note": "Two recent FE5 digital portraits (2025); Prince of Leonster page fetched and confirmed as Leif of Thracia 776."
+ },
+ {
+  "name": "ambernjenkins09",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/ambernjenkins09"
+   },
+   {
+    "label": "Tanya",
+    "url": "https://www.deviantart.com/ambernjenkins09/art/Tanya-1281016558"
+   },
+   {
+    "label": "Miranda",
+    "url": "https://www.deviantart.com/ambernjenkins09/art/Miranda-1281016953"
+   }
+  ],
+  "note": "Three FE5 character pieces (Tanya, Lara, Miranda) posted as a set; found via DA 'thracia 776' search page."
+ },
+ {
+  "name": "majorkatesuragi",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/majorkatesuragi"
+   },
+   {
+    "label": "Thracia 776 boxart but bad",
+    "url": "https://www.deviantart.com/majorkatesuragi/art/Thracia-776-boxart-but-bad-1010838762"
+   },
+   {
+    "label": "Leif (Fire Emblem)",
+    "url": "https://www.deviantart.com/majorkatesuragi/art/Leif-Fire-Emblem-1010837331"
+   }
+  ],
+  "note": "FE5 boxart redraw plus Leif portrait, also draws wider Jugdral (Lewyn); verified on DA search page."
+ },
+ {
+  "name": "mionachan",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/mionachan"
+   },
+   {
+    "label": "FE - Ares and Reinhardt",
+    "url": "https://www.deviantart.com/mionachan/art/FE-Ares-and-Reinhardt-759279064"
+   },
+   {
+    "label": "Fire Emblem - Reinhardt",
+    "url": "https://www.deviantart.com/mionachan/art/Fire-Emblem-Reinhardt-754026596"
+   }
+  ],
+  "note": "Three Thracia-flavored pieces (Reinhardt x2, Thunder Goddess and Thunder's Sword); verified across tag/search pages."
+ },
+ {
+  "name": "jules1998",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/jules1998"
+   },
+   {
+    "label": "Inheritors of Jugdral: Chibi Finn",
+    "url": "https://www.deviantart.com/jules1998/art/Inheritors-of-Jugdral-Chibi-Finn-936894796"
+   },
+   {
+    "label": "Score of Heroes: Veld Battle",
+    "url": "https://www.deviantart.com/jules1998/art/Score-of-Heroes-Applying-Justice-Veld-Battle"
+   }
+  ],
+  "note": "Runs ongoing Inheritors of Jugdral / Jugdral Calendar series spanning FE4+FE5 (Finn, Veld); Veld Battle URL slug approximate (unverified)."
+ },
+ {
+  "name": "luxearte",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/luxearte"
+   },
+   {
+    "label": "Eyvel (Fire Emblem)",
+    "url": "https://www.deviantart.com/luxearte/art/Eyvel-Fire-Emblem-909112949"
+   }
+  ],
+  "note": "Digital painter with Eyvel, Linoan, and Miranda FE5 pieces; Eyvel page fetched and confirmed."
+ },
+ {
+  "name": "Ray (mageknight404)",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Tumblr",
+    "url": "https://mageknight404.tumblr.com/"
+   },
+   {
+    "label": "Linoan post",
+    "url": "https://mageknight404.tumblr.com/post/142640444984/ive-never-played-thracia-before-who-is-linoan"
+   },
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/28091932"
+   },
+   {
+    "label": "work: Linoan - Warrior of Heim",
+    "url": "https://www.pixiv.net/artworks/128366409"
+   },
+   {
+    "label": "work: Linoan, Tarrah's Blooming Flower",
+    "url": "https://www.pixiv.net/artworks/114349360"
+   }
+  ],
+  "note": "Years of Linoan/FE5 fan art on Tumblr (Warrior of Heim, Tarrah's Blooming Flower, portrait halfbody); post fetched and confirmed. | 4 dedicated Linoan portraits posted to the JP tag; single-character devotion (unverified)."
+ },
+ {
+  "name": "IsAnElegy",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "itch.io",
+    "url": "https://isanelegy.itch.io/fe5-level-1-remake"
+   }
+  ],
+  "note": "FE5 Level 1 Remake on itch.io faithfully recreating Thracia 776's SNES presentation and effects."
+ },
+ {
+  "name": "Aranza Vargas (fruitfulsheep)",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "leaf & nanna - fire emblem thracia 776",
+  "links": [
+   {
+    "label": "ArtStation",
+    "url": "https://www.artstation.com/artwork/XBA6rD"
+   },
+   {
+    "label": "ArtStation profile",
+    "url": "https://fruitfulsheep.artstation.com/"
+   }
+  ],
+  "note": "Leif and Nanna ArtStation illustration; ArtStation blocks fetch (unverified)."
+ },
+ {
+  "name": "Marthur",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Sara - Fire Emblem Thracia 776",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/marthur/art/Sara-Fire-Emblem-Thracia-776-578557123"
+   }
+  ],
+  "note": "Sara piece from a prolific FE artist; verified on live thracia/fe5 tag pages."
+ },
+ {
+  "name": "PhantasticAnanas",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Olwen",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/phantasticananas/art/Olwen-674101458"
+   }
+  ],
+  "note": "Olwen illustration; verified on thracia776 and fe5 tag pages."
+ },
+ {
+  "name": "RichieLC",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Mareeta Fanart from Fire Emblem: Thracia 776",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/richielc/art/Mareeta-Fanart-from-Fire-Emblem-Thracia-776-993580458"
+   }
+  ],
+  "note": "Mareeta illustration; listed on DA 'thracia 776' search page."
+ },
+ {
+  "name": "Sozushigomi",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Olwen from Fire Emblem Thracia 776",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/sozushigomi/art/Olwen-from-Fire-Emblem-Thracia-776-741187379"
+   }
+  ],
+  "note": "Olwen illustration; verified on olwen tag page."
+ },
+ {
+  "name": "kagato007",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Olwen",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/kagato007/art/Olwen-835233323"
+   }
+  ],
+  "note": "Olwen illustration; verified on olwen tag page."
+ },
+ {
+  "name": "Linkerbell",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Olwen",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/linkerbell/art/Olwen-773360493"
+   }
+  ],
+  "note": "Olwen illustration; verified on olwen tag page."
+ },
+ {
+  "name": "isseiart501",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Olwen",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/isseiart501/art/Olwen-912436379"
+   }
+  ],
+  "note": "Olwen piece; listed on DA 'thracia 776' search page."
+ },
+ {
+  "name": "MinaCream",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "#713 Olwen (Fire Emblem Thracia 776)",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/minacream/art/713-Olwen-Fire-Emblem-Thracia-776-876717128"
+   }
+  ],
+  "note": "Numbered-commission Olwen pinup from a high-volume commission artist; verified on olwen tag page."
+ },
+ {
+  "name": "Animelover-Shiro",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "[Fire Emblem: Thracia 776] Leaf? Leif. (painting)",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/animelover-shiro/art/Fire-Emblem-Thracia-776-Leaf-Leif-painting-714479187"
+   }
+  ],
+  "note": "Leif painting; verified on leif tag page."
+ },
+ {
+  "name": "germost",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "[fe5] leif",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/germost/art/fe5-leif-734372478"
+   }
+  ],
+  "note": "Leif piece explicitly tagged fe5; verified on fe5 tag page."
+ },
+ {
+  "name": "pr1nce-jubiii",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "leif fire emblem",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/pr1nce-jubiii/art/leif-fire-emblem-914166602"
+   }
+  ],
+  "note": "Leif portrait; verified on jugdral tag page."
+ },
+ {
+  "name": "flowerfuture",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Realistic Nanna",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/flowerfuture/art/Realistic-Nanna-921656571"
+   }
+  ],
+  "note": "Realistic-style Nanna portrait; verified on jugdral tag page."
+ },
+ {
+  "name": "Card-Queen",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Finn Greetings",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/card-queen/art/Finn-Greetings-788000607"
+   }
+  ],
+  "note": "Finn greeting-card style piece; verified on jugdral tag page."
+ },
+ {
+  "name": "ArtyCharmy",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Finn",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/artycharmy/art/Finn-631168997"
+   }
+  ],
+  "note": "Finn portrait; verified on thracia tag page."
+ },
+ {
+  "name": "Polyl",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Fred (FE5) - FE Compendium",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/polyl/art/Fred-FE5-FE-Compendium-706868317"
+   }
+  ],
+  "note": "Fred entry for the FE Compendium community project; verified on jugdral tag page."
+ },
+ {
+  "name": "ZWO-colorcircus",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Fire Emblem Compendium: Fergus",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/zwo-colorcircus/art/Fire-Emblem-Compendium-Fergus-702328292"
+   }
+  ],
+  "note": "Fergus entry for the FE Compendium project; verified on jugdral tag page."
+ },
+ {
+  "name": "chiclecosmos",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "kempf",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/chiclecosmos/art/kempf-833076558"
+   }
+  ],
+  "note": "Rare fan art of FE5 villain Kempf; verified on fe5 tag page."
+ },
+ {
+  "name": "Keoen",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Hidden Lineage",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/keoen/art/Hidden-Lineage-741601434"
+   }
+  ],
+  "note": "Jugdral lineage-themed piece tagged fe5; verified on fe5 tag page, subject interpretation unconfirmed."
+ },
+ {
+  "name": "Eldigan",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Thracia 776",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/eldigan/art/Thracia-776-641419402"
+   }
+  ],
+  "note": "Piece titled after the game itself; listed on DA 'thracia 776' search page."
+ },
+ {
+  "name": "Magma743",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "For The Glory of Thracia!",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/magma743/art/For-The-Glory-of-Thracia-735872436"
+   }
+  ],
+  "note": "Thracia kingdom themed piece; listed on DA 'thracia 776' search page."
+ },
+ {
+  "name": "PrinceLaxaII",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Mareeta from Fire Emblem!",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/princelaxaii/art/Mareeta-from-Fire-Emblem-1093059342"
+   }
+  ],
+  "note": "Mareeta piece; listed on DA 'thracia 776' search page."
+ },
+ {
+  "name": "StanSharp",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Eyvel",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/stansharp/art/Eyvel-645798393"
+   }
+  ],
+  "note": "Eyvel portrait; verified on eyvel tag page."
+ },
+ {
+  "name": "puffypinkpaws",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "COMMISSION: Mareeta and Nanna",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/puffypinkpaws/art/COMMISSION-Mareeta-and-Nanna-1100407773"
+   }
+  ],
+  "note": "Mareeta and Nanna duo commission; verified on mareeta tag page."
+ },
+ {
+  "name": "RiestaRe",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Fallen Mareeta - Fire Emblem",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/riestare/art/Fallen-Mareeta-Fire-Emblem-872233366"
+   }
+  ],
+  "note": "FE Heroes Fallen Mareeta illustration (FE5 character, in scope); verified on mareeta tag page."
+ },
+ {
+  "name": "MostlyFunStuff",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Pincer Attack!",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/mostlyfunstuff/art/Pincer-Attack-937750690"
+   }
+  ],
+  "note": "Mareeta action piece; verified on mareeta tag page."
+ },
+ {
+  "name": "skittyTail",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Mareeta Posessed",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/skittytail/art/Mareeta-Posessed-797536573"
+   }
+  ],
+  "note": "Shadow Sword possessed Mareeta; verified on mareeta and thracia tag pages."
+ },
+ {
+  "name": "associate37",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Mareeta",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/associate37/art/Mareeta-870764999"
+   }
+  ],
+  "note": "Mareeta portrait; verified on mareeta tag page."
+ },
+ {
+  "name": "Ilvy-Fantastic",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Mareeta Fanart Lineart",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/ilvy-fantastic/art/Mareeta-Fanart-Lineart-814551391"
+   }
+  ],
+  "note": "Mareeta lineart; verified on mareeta tag page."
+ },
+ {
+  "name": "BloshBurger",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Mareeta honing her sword",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/bloshburger/art/Mareeta-honing-her-sword-1102151457"
+   }
+  ],
+  "note": "Mareeta piece; verified on mareeta tag page."
+ },
+ {
+  "name": "Sie-tje",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "FE4/5: Ishtar",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/sie-tje/art/FE4-5-Ishtar-660370206"
+   }
+  ],
+  "note": "Ishtar explicitly tagged FE4/5 and thracia776; verified on thracia776 and fe5 tag pages."
+ },
+ {
+  "name": "babykatafan (farah)",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Linoan and Safy fan art",
+  "links": [
+   {
+    "label": "Tumblr",
+    "url": "https://babykatafan.tumblr.com/"
+   }
+  ],
+  "note": "Tumblr art archive with a well-noted Linoan/Safy Thracia piece per tag indexes; specific post not reachable (unverified)."
+ },
+ {
+  "name": "Fe-Lover-98",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Thracia 776 Boys 1",
+  "links": [
+   {
+    "label": "DeviantArt",
+    "url": "https://www.deviantart.com/fe-lover-98/art/Thracia-776-Boys-1-1244091742"
+   }
+  ],
+  "note": "Group piece of FE5 male cast, numbering suggests a series; listed on DA 'thracia 776' search page."
+ },
+ {
+  "name": "rusea",
+  "nativeName": "ルセア",
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "itch.io",
+    "url": "https://rusea.itch.io/karins-war-legend-on-jugdral"
+   },
+   {
+    "label": "Bilibili article",
+    "url": "https://www.bilibili.com/read/cv40557793"
+   },
+   {
+    "label": "Bilibili release video",
+    "url": "https://www.bilibili.com/video/BV1BaPBegEiA"
+   },
+   {
+    "label": "Bilibili space",
+    "url": "https://space.bilibili.com/4176921"
+   }
+  ],
+  "note": "FE4/FE5 fan game on itch.io whose chapters 6-15 retell the Thracia 776 plotline in SNES style (unverified). | CN Bilibili (1.3k followers): self-made Genealogy+Thracia 776 doujin SRPG built around FE5 pegasus knight Karin, with custom pixel/portrait assets — the most substantial original CN FE5 fan work surfaced; 多拉基亚776-tagged | Works: \"Karin's War: Legend on Jugdral\"; \"Karin's Jugdral War Chronicle (FE4+FE5 fan game, SRPG Studio)\""
+ },
+ {
+  "name": "cuboon",
+  "nativeName": "cuboon",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/8545"
+   },
+   {
+    "label": "X",
+    "url": "https://twitter.com/cuboon"
+   },
+   {
+    "label": "site",
+    "url": "http://smithdas.client.jp/"
+   },
+   {
+    "label": "work: FE Cypher Lyn",
+    "url": "https://www.pixiv.net/artworks/69438976"
+   },
+   {
+    "label": "work: FEH Divine General Lyn",
+    "url": "https://www.pixiv.net/artworks/79319518"
+   }
+  ],
+  "note": "Professional illustrator with official FE Cypher/FEH-grade Lyn work (5000+ bookmarks); closest to official look; personal commissions currently closed."
+ },
+ {
+  "name": "Gonzales",
+  "nativeName": "ゴンザレス",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/182307"
+   },
+   {
+    "label": "X",
+    "url": "https://twitter.com/gonzarez1938"
+   },
+   {
+    "label": "work: Bride Lyn",
+    "url": "https://www.pixiv.net/artworks/90487582"
+   },
+   {
+    "label": "work: Lyndis",
+    "url": "https://www.pixiv.net/artworks/89369074"
+   }
+  ],
+  "note": "Multiple 5000+-bookmark Lyn illustrations; no commissions listed."
+ },
+ {
+  "name": "ippers",
+  "nativeName": "ippers",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/15965611"
+   },
+   {
+    "label": "X",
+    "url": "https://twitter.com/t_ippers"
+   },
+   {
+    "label": "work: Midsummer Princess (Lyn)",
+    "url": "https://www.pixiv.net/artworks/97318698"
+   }
+  ],
+  "note": "High-polish FEH-style Lyn art in the permanent-popular tier for the 烈火の剣 tag."
+ },
+ {
+  "name": "aoi karasu",
+  "nativeName": "aoi karasu",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/39796021"
+   },
+   {
+    "label": "X",
+    "url": "https://x.com/aoi_karasuu"
+   },
+   {
+    "label": "work: Ursula",
+    "url": "https://www.pixiv.net/artworks/144133430"
+   },
+   {
+    "label": "work: Ursula",
+    "url": "https://www.pixiv.net/artworks/143538611"
+   }
+  ],
+  "note": "Self-declared single-character account: posts only FE7 Ursula art; more active on X."
+ },
+ {
+  "name": "Celes",
+  "nativeName": "Celes",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/44941289"
+   },
+   {
+    "label": "X",
+    "url": "https://twitter.com/cf_wing"
+   },
+   {
+    "label": "site",
+    "url": "https://closefantasy.jimdofree.com/"
+   },
+   {
+    "label": "work: Kent/Lyn sketches 2026",
+    "url": "https://www.pixiv.net/artworks/141661292"
+   }
+  ],
+  "note": "Profile states 'I love FIRE EMBLEM The Blazing Blade, I draw a lot of Lyn & Kent'; dedicated FE7 focus with personal site."
+ },
+ {
+  "name": "Shoukichi",
+  "nativeName": "しょう吉",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/98412619"
+   },
+   {
+    "label": "X",
+    "url": "https://twitter.com/showk555dx"
+   },
+   {
+    "label": "Skeb",
+    "url": "https://skeb.jp/@showk555dx"
+   },
+   {
+    "label": "work: Hector",
+    "url": "https://www.pixiv.net/artworks/144182470"
+   },
+   {
+    "label": "work: Jaffar",
+    "url": "https://www.pixiv.net/artworks/142861090"
+   }
+  ],
+  "note": "Draws mainly Fire Emblem, 10+ Hector works in official-adjacent style; Skeb commissions OPEN (handle @showk555dx)."
+ },
+ {
+  "name": "liara",
+  "nativeName": "liara",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/126283229"
+   },
+   {
+    "label": "X",
+    "url": "https://twitter.com/liara_feh_gn004"
+   },
+   {
+    "label": "work: Swimsuit Ninian",
+    "url": "https://www.pixiv.net/artworks/146796626"
+   },
+   {
+    "label": "work: Swimsuit Eliwood",
+    "url": "https://www.pixiv.net/artworks/146796564"
+   }
+  ],
+  "note": "Profile states Eliwood-focused; 19+ Eliwood and 7+ Ninian works, very active in 2026."
+ },
+ {
+  "name": "Yura",
+  "nativeName": "遊羅",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/38301320"
+   },
+   {
+    "label": "X",
+    "url": "https://twitter.com/yura_syasutoa"
+   }
+  ],
+  "note": "~20-year FE series veteran; 12+ Hector-tag entries incl. comics (individual work IDs unverified)."
+ },
+ {
+  "name": "Poyo",
+  "nativeName": "ぽよ",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/107858625"
+   },
+   {
+    "label": "X",
+    "url": "https://twitter.com/natsupoyo27832"
+   },
+   {
+    "label": "work: FE compilation 4",
+    "url": "https://www.pixiv.net/artworks/142893830"
+   }
+  ],
+  "note": "Retro-game fan drawing FE7 manga/compilations; multiple Hector and Eliwood entries."
+ },
+ {
+  "name": "Yukino",
+  "nativeName": "雪乃",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/14179712"
+   },
+   {
+    "label": "X",
+    "url": "https://x.com/lan94550405"
+   },
+   {
+    "label": "work: Maid Lyn",
+    "url": "https://www.pixiv.net/artworks/144616269"
+   },
+   {
+    "label": "work: Lyndis",
+    "url": "https://www.pixiv.net/artworks/141691044"
+   }
+  ],
+  "note": "Specializes in 90s-era game illustration styles (FE + Langrisser), good retro-official fit; requests currently closed."
+ },
+ {
+  "name": "SATURN YAE",
+  "nativeName": "SATURN YAE",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/125104540"
+   },
+   {
+    "label": "work: Costume-swap Nino",
+    "url": "https://www.pixiv.net/artworks/144426201"
+   },
+   {
+    "label": "work: Nino",
+    "url": "https://www.pixiv.net/artworks/146648554"
+   }
+  ],
+  "note": "Recurring Nino/FE7 costume illustration series through 2026."
+ },
+ {
+  "name": "kevinzhengzz",
+  "nativeName": "kevinzhengzz",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/18614318"
+   },
+   {
+    "label": "work: Ninian (Mona Lisa parody)",
+    "url": "https://www.pixiv.net/artworks/141897703"
+   },
+   {
+    "label": "work: Drunk Florina",
+    "url": "https://www.pixiv.net/artworks/141858552"
+   }
+  ],
+  "note": "Multiple multi-page Ninian and Florina sets on pixiv (Chinese-language captions)."
+ },
+ {
+  "name": "kn135",
+  "nativeName": "kn135",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/8934660"
+   },
+   {
+    "label": "work: Lyn",
+    "url": "https://www.pixiv.net/artworks/146599585"
+   },
+   {
+    "label": "work: Easter Lyn",
+    "url": "https://www.pixiv.net/artworks/143177825"
+   }
+  ],
+  "note": "Repeat Lyn illustrator active through mid-2026."
+ },
+ {
+  "name": "Petrus92",
+  "nativeName": "Petrus92",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/83791008"
+   },
+   {
+    "label": "work: Nino Visits Sakura's Home",
+    "url": "https://www.pixiv.net/artworks/144228734"
+   },
+   {
+    "label": "work: Lyn vs Ursula Scuba Fight",
+    "url": "https://www.pixiv.net/artworks/143944892"
+   }
+  ],
+  "note": "Multiple FE7 crossover/scenario pieces (Nino, Lyn, Ursula)."
+ },
+ {
+  "name": "Yuuki",
+  "nativeName": "ユーキ",
+  "category": "artist",
+  "games": [
+   "fe7",
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/124679914"
+   },
+   {
+    "label": "work: Nino and Rebecca",
+    "url": "https://www.pixiv.net/artworks/143587600"
+   },
+   {
+    "label": "work: Reglay ducal family dinner",
+    "url": "https://www.pixiv.net/artworks/143419664"
+   },
+   {
+    "label": "work: Dragon Knights of Thracia",
+    "url": "https://www.pixiv.net/artworks/144357143"
+   },
+   {
+    "label": "work: Meeting in Fiana Village",
+    "url": "https://www.pixiv.net/artworks/144252096"
+   }
+  ],
+  "note": "Profile says they post 'to get more people to fall in love with Fire Emblem'; warm FE7/FE6 character pieces. | 10+ Thracia-story illustrations in 2024-25 (Leif's flight from Leonster, Lara class-change, Eyvel & Mareeta); dedicated FE5 evangelist per bio; no commissions listed."
+ },
+ {
+  "name": "4a-pooosuke",
+  "nativeName": "4a-pooosuke",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/1187991"
+   },
+   {
+    "label": "X",
+    "url": "https://twitter.com/4apooosuke34656"
+   },
+   {
+    "label": "work: FE Blazing Blade (21p)",
+    "url": "https://www.pixiv.net/artworks/142222860"
+   }
+  ],
+  "note": "21-page FE7 girls compilation (Lyn, Rebecca, Priscilla, Ninian, Nino, Florina, Serra) plus nostalgic uploads."
+ },
+ {
+  "name": "Haniya",
+  "nativeName": "はにや",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/121746"
+   },
+   {
+    "label": "X",
+    "url": "https://twitter.com/hani0610"
+   },
+   {
+    "label": "work: Heath/Legault/Lloyd doujin sample",
+    "url": "https://www.pixiv.net/artworks/143835458"
+   }
+  ],
+  "note": "Active FE7 doujinshi maker (Black Fang / Heath-centric samples)."
+ },
+ {
+  "name": "Jon",
+  "nativeName": "ジョン",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/11342389"
+   },
+   {
+    "label": "work: Hector 3 (GIF)",
+    "url": "https://www.pixiv.net/artworks/53141025"
+   },
+   {
+    "label": "work: Karel (GIF)",
+    "url": "https://www.pixiv.net/artworks/48688580"
+   },
+   {
+    "label": "work: Lloyd critical (GIF)",
+    "url": "https://www.pixiv.net/artworks/48617880"
+   }
+  ],
+  "note": "Best GBA-battle-animation match found: animated FE7 pixel work (Hector, Karel, Lloyd, Durandal heroes) faithful to in-game sprites."
+ },
+ {
+  "name": "Mimizuku Shizuku",
+  "nativeName": "みみずくしずく",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/233005"
+   },
+   {
+    "label": "X",
+    "url": "https://twitter.com/mimizukusizuku"
+   },
+   {
+    "label": "site",
+    "url": "https://mimizukusizuku.web.fc2.com/"
+   },
+   {
+    "label": "work: Serra (dot)",
+    "url": "https://www.pixiv.net/artworks/1326546"
+   },
+   {
+    "label": "work: Rebecca (dot)",
+    "url": "https://www.pixiv.net/artworks/1166398"
+   }
+  ],
+  "note": "Hobby game dev, self-described dot-art specialist; six-plus FE7 cast sprites (Serra, Wallace, Rebecca, Raven, Lucius, Matthew)."
+ },
+ {
+  "name": "Susu",
+  "nativeName": "スース",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/8368953"
+   },
+   {
+    "label": "work: FE7 protagonists (Minecraft dot)",
+    "url": "https://www.pixiv.net/artworks/64960078"
+   },
+   {
+    "label": "work: Ninian (Minecraft dot)",
+    "url": "https://www.pixiv.net/artworks/64973415"
+   }
+  ],
+  "note": "Five-work Minecraft pixel series covering Lyn, Eliwood, Hector, Ninian."
+ },
+ {
+  "name": "Aono Sorano",
+  "nativeName": "青野宇宙乃",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/1204084"
+   },
+   {
+    "label": "work: Hector (dot)",
+    "url": "https://www.pixiv.net/artworks/67780499"
+   },
+   {
+    "label": "work: Lyndis redone (dot)",
+    "url": "https://www.pixiv.net/artworks/67495335"
+   }
+  ],
+  "note": "FE7 lord dot-art pieces; name reading approximate."
+ },
+ {
+  "name": "Hiragi",
+  "nativeName": "ヒラギ",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/28950904"
+   },
+   {
+    "label": "work: Lyn (dot)",
+    "url": "https://www.pixiv.net/artworks/66665700"
+   },
+   {
+    "label": "work: Ninian ride (GIF)",
+    "url": "https://www.pixiv.net/artworks/66255856"
+   }
+  ],
+  "note": "FE7 dot art including animated Ninian piece."
+ },
+ {
+  "name": "Ibushi (OathCradle)",
+  "nativeName": "いぶし(オース)",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/17599546"
+   },
+   {
+    "label": "X",
+    "url": "https://x.com/ibushi_king"
+   },
+   {
+    "label": "Skeb",
+    "url": "https://skeb.jp/@ibushi_king"
+   },
+   {
+    "label": "FANBOX",
+    "url": "https://oathcradle.fanbox.cc/"
+   },
+   {
+    "label": "work: Skeb Lyn (SFW)",
+    "url": "https://www.pixiv.net/artworks/144603360"
+   }
+  ],
+  "note": "FE-loving commission artist with delivered Skeb Lyn work; Skeb/FANBOX/Fantia/Booth all active, commissions open."
+ },
+ {
+  "name": "agahari",
+  "nativeName": "agahari",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "both",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "TINAMI",
+    "url": "https://www.tinami.com/creator/profile/856"
+   },
+   {
+    "label": "site",
+    "url": "http://aga.qusqus.com/"
+   }
+  ],
+  "note": "TINAMI veteran, 'FE always' per profile; draws across 烈火の剣/封印/older FE incl. GBA-style face graphics (顔グラ) and pixel work."
+ },
+ {
+  "name": "Kuri Marron",
+  "nativeName": "久利マロン",
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/122113300"
+   }
+  ],
+  "note": "Several Ninian illustrations in the ニニアン tag feed; individual work IDs not captured (unverified)."
+ },
+ {
+  "name": "Shuroku Ushu",
+  "nativeName": "修禄羽州",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Green Swordswoman Clad in the Wind of the Great Plains: Lyndis",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/144365832"
+   }
+  ],
+  "note": "pixiv daily-topic entry, June 2026."
+ },
+ {
+  "name": "Nagoyan",
+  "nativeName": "なごやん",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Daily Topic 'Green' — Lyn",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/144367495"
+   }
+  ],
+  "note": "Ponytail Lyn for the pixiv green-theme daily topic."
+ },
+ {
+  "name": "Komatsunara",
+  "nativeName": "コマツナーラ",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Fire Emblem Blazing Blade: Damian",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/144573064"
+   }
+  ],
+  "note": "Rare minor-boss subject pick."
+ },
+ {
+  "name": "Roki-sensei",
+  "nativeName": "ロキ先生",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Fire Emblem Blazing Blade — Lyn",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/142763439"
+   }
+  ],
+  "note": "Digital Lyn portrait."
+ },
+ {
+  "name": "Burechiki",
+  "nativeName": "ブレチキ",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Lyndis from FE Blazing Blade",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/143977005"
+   }
+  ],
+  "note": "Straightforward Lyn fan illustration."
+ },
+ {
+  "name": "Hinata Yui",
+  "nativeName": "日向ユイ",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Lyndis (Blazing Blade)",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/143850083"
+   }
+  ],
+  "note": "Lyn in her classic plains-noble outfit."
+ },
+ {
+  "name": "Yukishue",
+  "nativeName": "ゆきしゅえ",
+  "category": "artist",
+  "games": [
+   "fe7",
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/143980181"
+   },
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/143228486"
+   }
+  ],
+  "note": "Lyn pin-up style piece. | FEH tea-party Nanna; also has an Asbel piece (unverified). | Works: \"Lyndis\"; \"Tea Party Nanna\""
+ },
+ {
+  "name": "MIGVEL",
+  "nativeName": "MIGVEL",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "White Flowers (Nino)",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/144048990"
+   }
+  ],
+  "note": "Quiet Nino piece with white flowers."
+ },
+ {
+  "name": "Juka",
+  "nativeName": "じゅか",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "New School Term Uniform Emblem 2026: Ninian",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/142986918"
+   }
+  ],
+  "note": "Handle reads 依頼募集中 (accepting commission requests)."
+ },
+ {
+  "name": "Rio",
+  "nativeName": "梨央",
+  "category": "artist",
+  "games": [
+   "fe7",
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/142618389"
+   },
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/133168086"
+   }
+  ],
+  "note": "Lords duo piece. | Leif portrait (unverified). | Works: \"Matching (Eliwood and Hector)\"; \"Leif\""
+ },
+ {
+  "name": "ATon",
+  "nativeName": "ATon",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "with you (Eliwood and Nils)",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/142836981"
+   }
+  ],
+  "note": "Eliwood and Nils reverse-canon scenario."
+ },
+ {
+  "name": "SAEMOSA",
+  "nativeName": "SAEMOSA",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "A Lycian Wedding",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/142326695"
+   }
+  ],
+  "note": "Harken and Isadora wedding scene."
+ },
+ {
+  "name": "Ezaya KIWI",
+  "nativeName": "えざやKIWI",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "I-c-e c-r-e-a-m. (Rebecca)",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/142355254"
+   }
+  ],
+  "note": "Rebecca in a Cowboy Bebop parody gag."
+ },
+ {
+  "name": "Boo",
+  "nativeName": "Boo",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Lyn Mode Ch.10 Battle Conversation as Manga",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/142181260"
+   }
+  ],
+  "note": "8-page manga adapting the Lyn vs Lundgren chapter dialogue."
+ },
+ {
+  "name": "Kita Senri",
+  "nativeName": "北千里 (senri kita)",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "FE Heroes: Paladin of Pherae, Marcus (official work)",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/142367545"
+   },
+   {
+    "label": "pixiv user",
+    "url": "https://www.pixiv.net/users/190059"
+   }
+  ],
+  "note": "Official FE series illustrator posting her commissioned FEH Marcus art — literal official-look benchmark."
+ },
+ {
+  "name": "Maxim De",
+  "nativeName": "マクシムDe",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "Resplendent Ursula (pixel)",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/112058293"
+   }
+  ],
+  "note": "FEH Resplendent Ursula rendered as dot art."
+ },
+ {
+  "name": "SeiKo093",
+  "nativeName": "SeiKo093",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "Lyndis (pixel)",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/111087701"
+   }
+  ],
+  "note": "Pixel-art Lyn."
+ },
+ {
+  "name": "Itsukiru",
+  "nativeName": "イツキル",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "RPG Maker XP-format Lyndis Character Chip",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/84947033"
+   }
+  ],
+  "note": "Usable sprite-sheet format Lyn, shows sprite production skill."
+ },
+ {
+  "name": "MorisonNo1",
+  "nativeName": "MorisonNo1",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "FE Blazing Blade Ursula (pixel)",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/80207007"
+   }
+  ],
+  "note": "GBA-styled Ursula sprite work."
+ },
+ {
+  "name": "XEL",
+  "nativeName": "XEL",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "Lyn and Her Merry Companions (dot)",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/47081093"
+   }
+  ],
+  "note": "Group dot-art of the Lyn-mode party."
+ },
+ {
+  "name": "Damashe Kamomeo",
+  "nativeName": "だましぇ鴎雄",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "Magical Girl Black Fang (Nino, dot)",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/20525411"
+   }
+  ],
+  "note": "Nino magical-girl dot art; name reading approximate."
+ },
+ {
+  "name": "Itsuki Shohei",
+  "nativeName": "樹昭平",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "Lyn-sama (pixel)",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/19112185"
+   }
+  ],
+  "note": "Early-era pixel Lyn; name reading approximate."
+ },
+ {
+  "name": "Saber7",
+  "nativeName": "Saber7",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Swimsuit Lyn and Florina",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/146845934"
+   },
+   {
+    "label": "pixiv user",
+    "url": "https://www.pixiv.net/users/3692257"
+   }
+  ],
+  "note": "Most recent work in the 烈火の剣 tag as of July 2026."
+ },
+ {
+  "name": "JaniD",
+  "nativeName": "JaniD",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "CYL Outfit Swaps 1 (Lyn/Lucina)",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/142629938"
+   }
+  ],
+  "note": "FEH outfit-swap concept featuring Lyn; FE7 side qualifies."
+ },
+ {
+  "name": "Gebousagi",
+  "nativeName": "げぼうさぎ",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "Blazing Blade (dot)",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/66433955"
+   }
+  ],
+  "note": "FE7 dot-art piece from the 烈火の剣+ドット絵 intersection."
+ },
+ {
+  "name": "I-P-l",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/84472"
+   },
+   {
+    "label": "work: Leif and Mareeta",
+    "url": "https://www.pixiv.net/artworks/114800287"
+   },
+   {
+    "label": "work: Sleuf and Amalda",
+    "url": "https://www.pixiv.net/artworks/127968187"
+   },
+   {
+    "label": "skeb",
+    "url": "https://skeb.jp/@ippai_ippai"
+   }
+  ],
+  "note": "15+ Thracia works covering deep-cast picks (Miranda, Safy, Sara, troubadour mobs); soft clean linework close to official portrait framing; Skeb commissions open."
+ },
+ {
+  "name": "Natori Natori",
+  "nativeName": "名取なとり",
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/76629554"
+   },
+   {
+    "label": "work: Thracia 26th Anniversary",
+    "url": "https://www.pixiv.net/artworks/134460927"
+   },
+   {
+    "label": "twitter",
+    "url": "https://twitter.com/Natori_Natrium"
+   }
+  ],
+  "note": "8+ FE5 works incl. anniversary art and novel-inspired pieces; self-publishing focus, no commissions."
+ },
+ {
+  "name": "Mari",
+  "nativeName": "まり＠ursla99",
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/3952694"
+   },
+   {
+    "label": "work: Olwen and Fred",
+    "url": "https://www.pixiv.net/artworks/142228096"
+   },
+   {
+    "label": "skeb",
+    "url": "https://skeb.jp/@ursla99"
+   }
+  ],
+  "note": "9+ Jugdral works with strong Olwen/Fred focus and FE4/FE5 roundup sets; Skeb commissions confirmed open via profile."
+ },
+ {
+  "name": "sallow",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/10656489"
+   },
+   {
+    "label": "work: Hell",
+    "url": "https://www.pixiv.net/artworks/144691765"
+   },
+   {
+    "label": "work: Desert Sara",
+    "url": "https://www.pixiv.net/artworks/104671231"
+   }
+  ],
+  "note": "7 moody Sara-centric Thracia pieces; atmospheric painterly style; no commission info."
+ },
+ {
+  "name": "Byakko",
+  "nativeName": "びゃっこ",
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/1698638"
+   },
+   {
+    "label": "work: Mage-weapon Reinhardt release",
+    "url": "https://www.pixiv.net/artworks/115243364"
+   },
+   {
+    "label": "twitter",
+    "url": "https://twitter.com/byakkos"
+   }
+  ],
+  "note": "9+ twitlog compilations heavy on Reinhardt and the Lanzritter; posts primarily to X; no commissions."
+ },
+ {
+  "name": "Yukia",
+  "nativeName": "ゆきあ",
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/570874"
+   },
+   {
+    "label": "work: Eyvel (skeb)",
+    "url": "https://www.pixiv.net/artworks/103431487"
+   },
+   {
+    "label": "skeb",
+    "url": "https://skeb.jp/@firstaid0"
+   }
+  ],
+  "note": "Long-running FE sketch-compilation series (80s-90s) consistently tagged Thracia 776; Skeb opens a few times per year, announced on X."
+ },
+ {
+  "name": "Oikawa Kumagoro (ALZ)",
+  "nativeName": "及川熊五郎",
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/10162165"
+   },
+   {
+    "label": "work: Find the real Finn (Leif gag pixel)",
+    "url": "https://www.pixiv.net/artworks/47299681"
+   },
+   {
+    "label": "personal site Chirimen Yugido",
+    "url": "https://chirimenzeyo.ari-jigoku.com/illust_museum/game_fe/sonota_12seisenshi.html"
+   },
+   {
+    "label": "twitter",
+    "url": "https://x.com/alz_chirimen"
+   }
+  ],
+  "note": "SNES-faithful dot-art of Jugdral cast incl. Thracia gag pieces; runs a classic Japanese personal art site; strongest pixel match for FE5 official sprite look."
+ },
+ {
+  "name": "Ruumen",
+  "nativeName": "るーめん",
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/254556"
+   },
+   {
+    "label": "work: Thracia-style Mareeta sprite",
+    "url": "https://www.pixiv.net/artworks/42943124"
+   },
+   {
+    "label": "work: FE4-style young Selfina and Tina",
+    "url": "https://www.pixiv.net/artworks/42944803"
+   }
+  ],
+  "note": "Recreates characters in authentic Thracia 776 in-game sprite style; niche but exactly the SNES-faithful pixel profile requested (unverified)."
+ },
+ {
+  "name": "Mnejing30",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/54496926"
+   },
+   {
+    "label": "work: Reinhardt Trade Offer",
+    "url": "https://www.pixiv.net/artworks/120038779"
+   },
+   {
+    "label": "work: Amalda and Sleuf at the Beach",
+    "url": "https://www.pixiv.net/artworks/106504630"
+   }
+  ],
+  "note": "5+ humorous Reinhardt/Thracia pieces posted to the JP tag; meme-leaning style (unverified)."
+ },
+ {
+  "name": "level1fujoshi",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/6042806"
+   },
+   {
+    "label": "work: Asbel tan stuff 2",
+    "url": "https://www.pixiv.net/artworks/108339597"
+   }
+  ],
+  "note": "6+ untitled Thracia pieces with a clear Asbel focus (unverified)."
+ },
+ {
+  "name": "Sakihime",
+  "nativeName": "さき姫",
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/2195305"
+   },
+   {
+    "label": "work: Duo Linda & Sara",
+    "url": "https://www.pixiv.net/artworks/110760595"
+   },
+   {
+    "label": "work: Lifis x Tina",
+    "url": "https://www.pixiv.net/artworks/108030960"
+   }
+  ],
+  "note": "4+ Thracia works incl. FEH duo-unit concepts and name-pun crossovers; bright cel style (unverified)."
+ },
+ {
+  "name": "Toguro Maki",
+  "nativeName": "遠黒まき",
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/1380989"
+   },
+   {
+    "label": "work: Asbel-kun 8",
+    "url": "https://www.pixiv.net/artworks/112543042"
+   }
+  ],
+  "note": "Numbered Asbel-kun comic series running 8+ installments; sustained FE5 focus (unverified)."
+ },
+ {
+  "name": "Fujitsubo",
+  "nativeName": "藤壺",
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "TINAMI profile",
+    "url": "https://www.tinami.com/creator/profile/66861"
+   },
+   {
+    "label": "work: Reinhardt",
+    "url": "https://www.tinami.com/view/1077031"
+   },
+   {
+    "label": "work: Cyas",
+    "url": "https://www.tinami.com/view/1078079"
+   }
+  ],
+  "note": "Main Thracia contributor within TINAMI's 18-work tag; posted character-a-chapter art during a 2021 playthrough; verified via TINAMI view pages."
+ },
+ {
+  "name": "Eff",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/43193951"
+   },
+   {
+    "label": "work: Ronan, Lifis, and the beach",
+    "url": "https://www.pixiv.net/artworks/118476737"
+   }
+  ],
+  "note": "3 Ronan-centric Thracia works on the JP tag (unverified)."
+ },
+ {
+  "name": "nichigetsu",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/64777151"
+   },
+   {
+    "label": "work: Shiva protecting Safy",
+    "url": "https://www.pixiv.net/artworks/133385011"
+   },
+   {
+    "label": "work: Linoan",
+    "url": "https://www.pixiv.net/artworks/132937278"
+   }
+  ],
+  "note": "3 Thracia works featuring Shiva/Safy and Linoan (unverified)."
+ },
+ {
+  "name": "Yun Seungchae",
+  "nativeName": "윤승채",
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/97658919"
+   },
+   {
+    "label": "work: Sleuf, Priest of Bragi",
+    "url": "https://www.pixiv.net/artworks/145191987"
+   },
+   {
+    "label": "work: Robert, Bow Knight of Leonster",
+    "url": "https://www.pixiv.net/artworks/145191864"
+   }
+  ],
+  "note": "Posting a unit-portrait series (Sleuf, Robert, Pahn) in official-artwork framing on pixiv's JP tag; Korean artist on JP platform (unverified)."
+ },
+ {
+  "name": "Kawaji",
+  "nativeName": "川路",
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/22469761"
+   },
+   {
+    "label": "work: Awakening (Sara)",
+    "url": "https://www.pixiv.net/artworks/146855860"
+   },
+   {
+    "label": "work: Sara",
+    "url": "https://www.pixiv.net/artworks/122735758"
+   }
+  ],
+  "note": "Repeat Sara/Veld-arc pieces, most recent post June 2026; active (unverified)."
+ },
+ {
+  "name": "Kousetsu",
+  "nativeName": "こうせつ",
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/users/87470724"
+   },
+   {
+    "label": "work: Reinhardt",
+    "url": "https://www.pixiv.net/artworks/115363975"
+   },
+   {
+    "label": "work: Ishtar and Reinhardt",
+    "url": "https://www.pixiv.net/artworks/114636340"
+   }
+  ],
+  "note": "Reinhardt-focused pair of polished Thracia illustrations (unverified)."
+ },
+ {
+  "name": "Hiruya Higashichi",
+  "nativeName": "昼屋ひがしち",
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Melting Sunlit (doujin sample)",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/146839810"
+   }
+  ],
+  "note": "June 2026 doujin sample tagged Thracia 776 / Alva (unverified)."
+ },
+ {
+  "name": "ZUPPY",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Nanna",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/144897139"
+   }
+  ],
+  "note": "Standalone Nanna portrait (unverified)."
+ },
+ {
+  "name": "Oferuno",
+  "nativeName": "おふぇるの",
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Linoan!!",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/143877262"
+   }
+  ],
+  "note": "Energetic Linoan fan piece (unverified)."
+ },
+ {
+  "name": "Kaoru",
+  "nativeName": "かおる",
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Tea Party Finn",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/133755719"
+   }
+  ],
+  "note": "FEH tea-party Finn (unverified)."
+ },
+ {
+  "name": "Hiruhino",
+  "nativeName": "ひるひの",
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "FEH Tea Party Nanna",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/133878738"
+   }
+  ],
+  "note": "FEH costume Nanna (unverified)."
+ },
+ {
+  "name": "Murata Shoichi",
+  "nativeName": "むらた昇一",
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Ishtar (Fire Emblem: Thracia 776)",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/131049818"
+   }
+  ],
+  "note": "Ishtar as she appears in Thracia (unverified)."
+ },
+ {
+  "name": "Shiomi",
+  "nativeName": "潮見",
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Ronan",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/132155938"
+   }
+  ],
+  "note": "Ronan portrait (unverified)."
+ },
+ {
+  "name": "Kinaga",
+  "nativeName": "キナガ",
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Thracia 776",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/130242366"
+   }
+  ],
+  "note": "Group piece titled after the game; also drew a Karin (unverified)."
+ },
+ {
+  "name": "Unun",
+  "nativeName": "うんうん",
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Karin Sorties",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/140194591"
+   }
+  ],
+  "note": "Karin pegasus-knight piece (unverified)."
+ },
+ {
+  "name": "Merth",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "River Crossing Operation",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/140151215"
+   }
+  ],
+  "note": "Chapter 8 river-crossing scene composition (unverified)."
+ },
+ {
+  "name": "Enbu",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Lara",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/139670053"
+   }
+  ],
+  "note": "Lara dancer piece (unverified)."
+ },
+ {
+  "name": "Azusa",
+  "nativeName": "あずさ＠セリカ",
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Misha (Thracia 776)",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/119722111"
+   }
+  ],
+  "note": "Misha falcon-knight portrait; also drew Linoan (unverified)."
+ },
+ {
+  "name": "Mope",
+  "nativeName": "もぺ",
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "August (pixel art, FE Thracia 776)",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/94716801"
+   }
+  ],
+  "note": "Dot-art of tactician August; SNES-adjacent pixel style (unverified)."
+ },
+ {
+  "name": "D",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "Ronan GBA-style pixel art",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/86453479"
+   }
+  ],
+  "note": "Ronan rendered as a GBA-era battle sprite (unverified)."
+ },
+ {
+  "name": "otorihara",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Pahn, Thief of Dakia (FEH commissioned work)",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/115194757"
+   }
+  ],
+  "note": "Professional work-piece for FE Heroes' Pahn posted to the tag; pro-grade official-look capability (unverified)."
+ },
+ {
+  "name": "Potato",
+  "nativeName": "ポテト",
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Thracia 7 Girls",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/106914189"
+   }
+  ],
+  "note": "Group shot of Thracia's female cast (unverified)."
+ },
+ {
+  "name": "MAZI",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Eyvel",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/104899599"
+   }
+  ],
+  "note": "Eyvel swordmaster portrait (unverified)."
+ },
+ {
+  "name": "Chitose",
+  "nativeName": "ちとせ",
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Kempf",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/108473113"
+   }
+  ],
+  "note": "Rare villain pick, Kempf (unverified)."
+ },
+ {
+  "name": "Shirase Nankyoku",
+  "nativeName": "白瀬南極",
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Happy Hideout vol.1 (1999 doujin reprint)",
+  "links": [
+   {
+    "label": "pixiv",
+    "url": "https://www.pixiv.net/artworks/104175726"
+   }
+  ],
+  "note": "Repost of a 1999-published Thracia doujin, contemporary with the game's release (unverified)."
+ },
+ {
+  "name": "liang7086gl",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Bilibili profile",
+    "url": "https://space.bilibili.com/72967139"
+   },
+   {
+    "label": "FE7 TeZao mod official release (烈火之剑特造正式版发布)",
+    "url": "https://www.bilibili.com/video/BV1EYQKB1EiE"
+   },
+   {
+    "label": "Hector custom battle animation",
+    "url": "https://www.bilibili.com/video/BV1vK421y7HK"
+   },
+   {
+    "label": "Eight Legends vs Nergal custom animations",
+    "url": "https://www.bilibili.com/video/BV1P24y1F7SV"
+   }
+  ],
+  "note": "Bilibili (CN); author of the 烈火之剑特造 mod — original custom battle-sprite animations covering the FE7 cast (release desc confirms he builds independent sprite models per character; videos 37k-60k plays); center of the CN FE7 pixel scene."
+ },
+ {
+  "name": "g5275",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Bahamut profile",
+    "url": "https://home.gamer.com.tw/g5275"
+   },
+   {
+    "label": "Lyndis (リンディス)",
+    "url": "https://home.gamer.com.tw/artwork.php?sn=2965278"
+   },
+   {
+    "label": "Ninian (ニニアン)",
+    "url": "https://home.gamer.com.tw/artwork.php?sn=3658949"
+   },
+   {
+    "label": "Karla (カアラ)",
+    "url": "https://home.gamer.com.tw/artwork.php?sn=4013490"
+   }
+  ],
+  "note": "Bahamut TW creation-hall artist drawing FE characters across the series; six FE7 pieces (Lyndis, Ninian, Karla, Louise, Fiora, Ursula) listed under the FE7 ACG page acg.gamer.com.tw/commentList.php?acg_sn=5696; pages block bots so per-piece authorship inferred from the ACG list + Google snippets (unverified)."
+ },
+ {
+  "name": "Rorensu",
+  "nativeName": "ロレンス",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "Lyn T2 sword pre-battle cut-in — custom battle animation test",
+  "links": [
+   {
+    "label": "Bilibili video",
+    "url": "https://www.bilibili.com/video/BV1C34y1o7M3"
+   },
+   {
+    "label": "Bilibili profile",
+    "url": "https://space.bilibili.com/47345"
+   }
+  ],
+  "note": "Bilibili (CN); self-made FE7 custom battle-animation test built with FEBuilder (desc confirms own work), 157k plays — most-viewed CN FE7 sprite-work post found."
+ },
+ {
+  "name": "Haenz",
+  "nativeName": "핸즈",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Drew Lyn",
+  "links": [
+   {
+    "label": "DCInside post",
+    "url": "https://gall.dcinside.com/mgallery/board/view/?id=fireemblem&no=700058"
+   }
+  ],
+  "note": "DCInside KR Fire Emblem minor gallery; recommended-image fan drawing of Lyn ('린 그렸음', 2025-10-08) — one of the only original FE7 drawings surfaced in a deep sweep of the gallery."
+ },
+ {
+  "name": "AntonKurtz",
+  "nativeName": "안톤커츠",
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Made a 3D layered shadowbox frame of Lyn",
+  "links": [
+   {
+    "label": "DCInside post",
+    "url": "https://gall.dcinside.com/mgallery/board/view/?id=fireemblem&no=717933"
+   }
+  ],
+  "note": "DCInside KR FE minor gallery; video post (2026-07-01) of a handmade layered-paper 3D shadowbox of Lyn — craft rather than flat illustration."
+ },
+ {
+  "name": "j10212",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Fire Emblem art collection 1 (聖火圖合集1)",
+  "links": [
+   {
+    "label": "Bahamut creation",
+    "url": "https://home.gamer.com.tw/creationDetail.php?sn=5972183"
+   }
+  ],
+  "note": "Bahamut TW; art-collection post filed under the FE7 (烈火之劍) ACG creation list; page is bot-blocked so content and authorship could not be opened directly (unverified)."
+ },
+ {
+  "name": "Ebinkuu",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "X",
+    "url": "https://x.com/ebinkuu"
+   },
+   {
+    "label": "Pixiv",
+    "url": "https://www.pixiv.net/en/users/78716022"
+   },
+   {
+    "label": "DCInside repost",
+    "url": "https://gall.dcinside.com/mgallery/board/view/?id=fireemblem&no=374658"
+   }
+  ],
+  "note": "KR platform find: DCInside FE minor gallery thread reposts 8 of this EN/PT-speaking FE artist's Thracia duo illustrations (pixiv illust IDs in files); artist confirmed real on X/Pixiv, individual FE5 pieces not directly opened (unverified)"
+ },
+ {
+  "name": "Sansojjing",
+  "nativeName": "산소찡",
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Leif drawn for a fan anthology",
+  "links": [
+   {
+    "label": "DCInside post",
+    "url": "https://gall.dcinside.com/mgallery/board/view/?id=fireemblem&no=523312"
+   },
+   {
+    "label": "DCInside gallog",
+    "url": "https://gallog.dcinside.com/congsee111"
+   }
+  ],
+  "note": "KR DCInside FE minor gallery house artist (mostly FE4/3H/FEH doodles); this 2023 post is their own Leif (FE5) piece made for a fan anthology — only confirmed Thracia work in ~200 posts swept"
+ },
+ {
+  "name": "pirihibaneo",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Legendary Leif vs Legendary Seliph one-panel gag comic",
+  "links": [
+   {
+    "label": "DCInside translation post",
+    "url": "https://gall.dcinside.com/mgallery/board/view/?id=fireemblem&no=157543"
+   },
+   {
+    "label": "X (original)",
+    "url": "https://twitter.com/pirihibaneo/status/1294232832047378433"
+   }
+  ],
+  "note": "KR platform find: X artist's Leif (FE5/FEH Legendary) comic translated and reposted on DCInside by gallery sub-manager 캐스터보러스, 2020; original tweets not re-opened (unverified)"
+ },
+ {
+  "name": "Kii",
+  "nativeName": "기이",
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "illustration",
+  "deceased": false,
+  "singleTitle": "Swimsuit Nanna",
+  "links": [
+   {
+    "label": "DCInside post",
+    "url": "https://gall.dcinside.com/mgallery/board/view/?id=fireemblem&no=355587"
+   }
+  ],
+  "note": "KR DCInside FE minor gallery repost (2022) of a Nanna (FE5) summer illustration credited only as '기이 작가' by a Nanna-stan regular; no profile link given (unverified)"
+ },
+ {
+  "name": "Unknown (FE5 GBA demake)",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "Thracia 776 GBA remake (fan port with redrawn GBA-style pixel art)",
+  "links": [
+   {
+    "label": "Bilibili showcase 1",
+    "url": "https://www.bilibili.com/video/BV1GJ411t7mk"
+   },
+   {
+    "label": "Bilibili showcase 2",
+    "url": "https://www.bilibili.com/video/BV1uR4y1j7RP"
+   }
+  ],
+  "note": "CN Bilibili: completed GBA-engine remake of 多拉基亚776 with FE5 cast redone as GBA pixel portraits/battle sprites, 25k-43k views; videos are showcases by 陪你赏月的冬瓜/罗伊sd and hack creator attribution is unclear (unverified)"
+ },
+ {
+  "name": "Nuramon",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "FEU Profile",
+    "url": "https://feuniverse.us/u/nuramon"
+   },
+   {
+    "label": "Pixel Vault",
+    "url": "https://feuniverse.us/t/nuramons-pixel-vault/36103"
+   }
+  ],
+  "note": "Widely regarded as the top GBA-FE battle-animation creator; 70+ GBA-style portraits."
+ },
+ {
+  "name": "DATonDemand",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "FEU Profile",
+    "url": "https://feuniverse.us/u/datondemand"
+   },
+   {
+    "label": "Gallery thread",
+    "url": "https://feuniverse.us/t/datondemands-creative-mess/15309"
+   }
+  ],
+  "note": "Dozens of GBA-style battle animations, portraits, map sprites; F2U/F2E; active since 2022."
+ },
+ {
+  "name": "Flasuban",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "FEU Profile",
+    "url": "https://feuniverse.us/u/flasuban"
+   },
+   {
+    "label": "Graphics collection",
+    "url": "https://feuniverse.us/t/flasubans-general-graphics-collection/6591"
+   }
+  ],
+  "note": "GBA-style battle animations and class stills; F2U/F2E with credit."
+ },
+ {
+  "name": "RedBean",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "FEU Profile",
+    "url": "https://feuniverse.us/u/redbean"
+   },
+   {
+    "label": "Sprites thread",
+    "url": "https://feuniverse.us/t/red-beans-sprites/9284"
+   }
+  ],
+  "note": "30+ GBA-style animations, 20+ portraits; Chinese community crossover (Baidu Cloud)."
+ },
+ {
+  "name": "Pikmin1211",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "FEU Profile",
+    "url": "https://feuniverse.us/u/pikmin1211"
+   },
+   {
+    "label": "Animation Directory posts",
+    "url": "https://feuniverse.us/t/animation-directory/457/702"
+   }
+  ],
+  "note": "Prolific GBA battle-animation contributor to the FEU repository."
+ },
+ {
+  "name": "GabrielKnight",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "FEU Profile",
+    "url": "https://feuniverse.us/u/gabrielknight"
+   },
+   {
+    "label": "Repo credits",
+    "url": "https://feuniverse.us/t/fire-emblem-resource-repository-battle-animations-portraits-music-etc/3326/3221"
+   }
+  ],
+  "note": "Repeatedly credited for original GBA-style battle animations (Fencer, hatless Mage)."
+ },
+ {
+  "name": "Levin64",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "FEU Profile",
+    "url": "https://feuniverse.us/u/levin64"
+   },
+   {
+    "label": "Portrait thread",
+    "url": "https://feuniverse.us/t/levin-pixelings-f2u-f2e-mugs-available/5457"
+   }
+  ],
+  "note": "Dozens of GBA-style portraits used across major ROM hacks (Vision Quest, Legends of Avenir)."
+ },
+ {
+  "name": "Melia",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7",
+   "fe5"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "FEU Profile",
+    "url": "https://feuniverse.us/u/melia"
+   },
+   {
+    "label": "Sprites thread",
+    "url": "https://feuniverse.us/t/melias-sprites/3849"
+   }
+  ],
+  "note": "80+ GBA-style portraits, many of FE4/FE5 (Thracia) characters; running since 2018."
+ },
+ {
+  "name": "Atey (Luzan)",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "FEU Profile",
+    "url": "https://feuniverse.us/u/atey"
+   },
+   {
+    "label": "Showcase",
+    "url": "https://feuniverse.us/t/ateys-pixel-art-showcase/12646"
+   },
+   {
+    "label": "X",
+    "url": "https://twitter.com/o_Atey_o"
+   },
+   {
+    "label": "Tumblr",
+    "url": "https://white-anri.tumblr.com"
+   },
+   {
+    "label": "Instagram",
+    "url": "https://www.instagram.com/Atey_Luzan"
+   }
+  ],
+  "note": "Top-tier fully-custom GBA portrait artist; commissions ~$25/portrait; email dyugdrah@gmail.com."
+ },
+ {
+  "name": "PKLucky",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "FEU Profile",
+    "url": "https://feuniverse.us/u/pklucky"
+   },
+   {
+    "label": "Portrait Pile",
+    "url": "https://feuniverse.us/t/pks-portrait-pile-commissions-open/19430"
+   }
+  ],
+  "note": "Dozens of GBA-style mugs with blink/mouth frames; takes commissions (Ko-fi)."
+ },
+ {
+  "name": "Obsidian_Daddy",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "FEU Profile",
+    "url": "https://feuniverse.us/u/obsidian_daddy"
+   },
+   {
+    "label": "Sprites thread",
+    "url": "https://feuniverse.us/t/obsidians-sprites/5972"
+   }
+  ],
+  "note": "Highly regarded GBA-style mugs; his blink frames are a community-standard resource."
+ },
+ {
+  "name": "Lenh",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "FEU Profile",
+    "url": "https://feuniverse.us/u/lenh"
+   },
+   {
+    "label": "Thread",
+    "url": "https://feuniverse.us/t/lenhs-stuff/5076"
+   }
+  ],
+  "note": "GBA-style mugs and the widely used FE6 blink pack."
+ },
+ {
+  "name": "squidaccus",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "FEU Profile",
+    "url": "https://feuniverse.us/u/squidaccus"
+   },
+   {
+    "label": "Thread",
+    "url": "https://feuniverse.us/t/squids-portraits-animations-and-whatnot/28764"
+   }
+  ],
+  "note": "GBA-style portraits, splices, battle animations; active into 2026."
+ },
+ {
+  "name": "Hatsuru",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "FEU Profile",
+    "url": "https://feuniverse.us/u/hatsuru"
+   },
+   {
+    "label": "Asset dump",
+    "url": "https://feuniverse.us/t/so-artistic-ru-asset-dump/19212"
+   }
+  ],
+  "note": "Extensive GBA-format portraits and battle stills; active 2023-2026."
+ },
+ {
+  "name": "Fire Emblem Universe (FEU)",
+  "nativeName": null,
+  "category": "community",
+  "games": [
+   "fe7",
+   "fe5"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Site",
+    "url": "https://feuniverse.us"
+   },
+   {
+    "label": "Resource Repository",
+    "url": "https://feuniverse.us/t/fire-emblem-resource-repository-battle-animations-portraits-music-etc/3326"
+   }
+  ],
+  "note": "THE hub for GBA-FE-style portrait/sprite/animation artists; graphics repo curated by Klokinator."
+ },
+ {
+  "name": "Serenes Forest",
+  "nativeName": null,
+  "category": "community",
+  "games": [
+   "fe7",
+   "fe5"
+  ],
+  "style": null,
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Site",
+    "url": "https://serenesforest.net/"
+   },
+   {
+    "label": "FE7 section",
+    "url": "https://serenesforest.net/blazing-sword/"
+   },
+   {
+    "label": "FE5 section",
+    "url": "https://serenesforest.net/thracia-776/"
+   },
+   {
+    "label": "Forums",
+    "url": "https://forums.serenesforest.net/"
+   },
+   {
+    "label": "FE7 board (Fire Emblem)",
+    "url": "https://forums.serenesforest.net/forum/13-fire-emblem/"
+   },
+   {
+    "label": "NES/SNES-era board (incl. Thracia 776)",
+    "url": "https://forums.serenesforest.net/forum/11-nes-and-snes-era/"
+   },
+   {
+    "label": "Sprites forum",
+    "url": "https://forums.serenesforest.net/forum/43-sprites/"
+   },
+   {
+    "label": "Fan Projects forum",
+    "url": "https://forums.serenesforest.net/forum/8-fan-projects/"
+   }
+  ],
+  "note": "Largest western FE fansite: full FE7/FE5 data+artwork sections, game-specific boards, a dedicated Sprites showcase forum and Fan Projects board; forum structure verified via archived index (live forums are Cloudflare-gated)."
+ },
+ {
+  "name": "r/fireemblem",
+  "nativeName": null,
+  "category": "community",
+  "games": [
+   "fe7",
+   "fe5"
+  ],
+  "style": null,
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Subreddit",
+    "url": "https://www.reddit.com/r/fireemblem/"
+   },
+   {
+    "label": "Discord",
+    "url": "https://discord.com/invite/rfireemblem"
+   }
+  ],
+  "note": "Main series-wide subreddit with fan-art flairs plus its official ~15k-member Discord; FE7/FE5 art and ROM-hack news land here (unverified)."
+ },
+ {
+  "name": "Project Exile",
+  "nativeName": null,
+  "category": "community",
+  "games": [
+   "fe5"
+  ],
+  "style": null,
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Serenes Forest thread",
+    "url": "https://forums.serenesforest.net/index.php?/topic/85081-fe5-project-exile-thracia-776-script-and-menu-translation-fully-complete-and-released/"
+   },
+   {
+    "label": "FE Wiki fan-translation page",
+    "url": "https://fireemblemwiki.org/wiki/Fan_translation"
+   }
+  ],
+  "note": "Cirosan's 2019 full Thracia 776 fan translation that revitalized the English FE5 scene; community lives in its Serenes thread (unverified)."
+ },
+ {
+  "name": "Lil' Manster",
+  "nativeName": null,
+  "category": "community",
+  "games": [
+   "fe5"
+  ],
+  "style": null,
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "GitHub (public build files)",
+    "url": "https://github.com/Miacidae/Lil-Manster-Public"
+   },
+   {
+    "label": "Serenes Forest thread",
+    "url": "https://forums.serenesforest.net/topic/90189-fe5-lil-manster-%E2%80%93-translation-and-quality-of-life-patch-for-thracia-776/"
+   },
+   {
+    "label": "Lead (Miacis)",
+    "url": "https://forums.serenesforest.net/profile/4939-miacis/"
+   }
+  ],
+  "note": "Miacis-led successor patch to Project Exile (translation + QoL, still updated); GitHub repo verified, the de-facto hub of the current FE5 modding/translation community."
+ },
+ {
+  "name": "FE-Repo (Fire Emblem Graphics Repository)",
+  "nativeName": null,
+  "category": "community",
+  "games": [
+   "fe7"
+  ],
+  "style": null,
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "GitHub",
+    "url": "https://github.com/Klokinator/FE-Repo"
+   },
+   {
+    "label": "Site",
+    "url": "https://feessentials.com/"
+   }
+  ],
+  "note": "Klokinator's F2U/F2E repository of GBA-FE-style portraits, battle animations, map sprites and tilesets (343 stars) feeding FEBuilder/Tactile/Lex Talionis projects; correct URL is Klokinator/FE-Repo, not Fire-Emblem-Graphics-Repository."
+ },
+ {
+  "name": "FEBuilderGBA community",
+  "nativeName": null,
+  "category": "community",
+  "games": [
+   "fe7"
+  ],
+  "style": null,
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "GitHub",
+    "url": "https://github.com/FEBuilderGBA/FEBuilderGBA"
+   },
+   {
+    "label": "RomHack Plaza page",
+    "url": "https://romhackplaza.org/utilities/febuildergba-utility/"
+   }
+  ],
+  "note": "Open-source GBA-FE ROM editor (FE6/7/8) whose users form the biggest pipeline for inserting custom FE7-style portraits and animations; support runs through its GitHub and Discord."
+ },
+ {
+  "name": "Pegasus Knight (天馬騎士団)",
+  "nativeName": "天馬騎士団",
+  "category": "community",
+  "games": [
+   "fe7",
+   "fe5"
+  ],
+  "style": null,
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Site",
+    "url": "https://www.pegasusknight.com/"
+   },
+   {
+    "label": "FE5 section",
+    "url": "https://www.pegasusknight.com/mb/fe5/index.html"
+   },
+   {
+    "label": "FE7 section",
+    "url": "https://www.pegasusknight.com/mb/fe7/"
+   }
+  ],
+  "note": "Long-running Japanese FE strategy/community wiki hub with dedicated Thracia 776 and Rekka no Ken sections."
+ },
+ {
+  "name": "Fire Emblem Baidu Tieba (火焰之纹章吧)",
+  "nativeName": "火焰之纹章吧",
+  "category": "community",
+  "games": [
+   "fe7",
+   "fe5"
+  ],
+  "style": null,
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Tieba",
+    "url": "https://tieba.baidu.com/f?kw=%E7%81%AB%E7%84%B0%E4%B9%8B%E7%BA%B9%E7%AB%A0&ie=utf-8"
+   }
+  ],
+  "note": "Main Chinese FE fan forum on Baidu Tieba, active since the 2000s and covering the whole series incl. FE5/FE7 strategy, fan art and hacks (unverified)."
+ },
+ {
+  "name": "Sprite Database — Fire Emblem (GBA)",
+  "nativeName": null,
+  "category": "community",
+  "games": [
+   "fe7"
+  ],
+  "style": null,
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "FE7 page",
+    "url": "https://spritedatabase.net/game/990"
+   }
+  ],
+  "note": "Secondary sprite-rip archive with a full FE7 section (character/class battle sprites, magic effects, Lyn-route maps); community points here for rips missing from TSR."
+ },
+ {
+  "name": "BwdYeti",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "PixelJoint profile",
+    "url": "https://pixeljoint.com/p/23666.htm"
+   },
+   {
+    "label": "(Battle)Lord: Uther - FE7x",
+    "url": "https://pixeljoint.com/pixelart/50883.htm"
+   },
+   {
+    "label": "(Face)Uriel - FE7x",
+    "url": "https://pixeljoint.com/pixelart/54102.htm"
+   },
+   {
+    "label": "FE7x site",
+    "url": "https://www.bwdyeti.com/fe7x/"
+   }
+  ],
+  "note": "Lead of FE7x (Fire Emblem: Immortal Sword, a fan prequel to FE7); posts fully-custom GBA-FE-style battle animations and face sprites (Uther, Halberdier, Uriel) on PixelJoint."
+ },
+ {
+  "name": "X0-000",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "FE7x commissions",
+  "links": [
+   {
+    "label": "Post",
+    "url": "https://pixeljoint.com/pixelart/119634.htm"
+   },
+   {
+    "label": "PixelJoint profile",
+    "url": "https://pixeljoint.com/p/21883.htm"
+   }
+  ],
+  "note": "Veteran PixelJoint artist; 2018 commission set of GBA-FE-style sprites for the FE7x fan game."
+ },
+ {
+  "name": "Grim",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "TSR profile",
+    "url": "https://www.spriters-resource.com/profile/grim/"
+   },
+   {
+    "label": "Lyn (Lord) sheet",
+    "url": "https://www.spriters-resource.com/game_boy_advance/fireemblemtheblazingblade/asset/14092/"
+   }
+  ],
+  "note": "TSR ripper credited as uploader of FE7 lord/character battle-animation sheets incl. Lyn (Lord); verified via archived asset pages."
+ },
+ {
+  "name": "VincentASM",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7",
+   "fe5"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "TSR profile",
+    "url": "https://www.spriters-resource.com/profile/vincentasm/"
+   },
+   {
+    "label": "Fire (magic) sheet",
+    "url": "https://www.spriters-resource.com/game_boy_advance/fireemblemtheblazingblade/asset/53738/"
+   },
+   {
+    "label": "Serenes Forest",
+    "url": "https://serenesforest.net/"
+   }
+  ],
+  "note": "Serenes Forest's founder/webmaster; also a TSR submitter (FE7 magic-effect rips) and curator of Serenes' FE7/FE5 sprite galleries."
+ },
+ {
+  "name": "peeboy",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "TSR profile",
+    "url": "https://www.spriters-resource.com/profile/peeboy/"
+   },
+   {
+    "label": "Mage sheet",
+    "url": "https://www.spriters-resource.com/game_boy_advance/fireemblemtheblazingblade/asset/135665/"
+   }
+  ],
+  "note": "TSR ripper who filled FE7 enemy-class requests (Mage/Sage battle animations); active in the game page's request comments."
+ },
+ {
+  "name": "canasniimehugh",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7",
+   "fe5"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "TSR profile",
+    "url": "https://www.spriters-resource.com/profile/canasniimehugh/"
+   },
+   {
+    "label": "FE5 Eyvel sheet",
+    "url": "https://www.spriters-resource.com/snes/fireemblemthracia776/asset/48305/"
+   },
+   {
+    "label": "FE5 Introduction sheet",
+    "url": "https://www.spriters-resource.com/snes/fireemblemthracia776/asset/47625/"
+   },
+   {
+    "label": "FE7 Lyn w/ Durandal (Prototype)",
+    "url": "https://www.spriters-resource.com/game_boy_advance/fireemblemtheblazingblade/asset/51431/"
+   }
+  ],
+  "note": "The main cross-game TSR ripper here: uploaded Thracia 776 character sheets (Eyvel, intro) and the rare FE7 prototype Lyn-with-Durandal sheet."
+ },
+ {
+  "name": "Lord Louie",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe5"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "FE5 Warrior sheet",
+    "url": "https://www.spriters-resource.com/snes/fireemblemthracia776/asset/154466/"
+   },
+   {
+    "label": "FE5 Dark Bishop sheet",
+    "url": "https://www.spriters-resource.com/snes/fireemblemthracia776/asset/158285/"
+   }
+  ],
+  "note": "TSR uploader of multiple Thracia 776 enemy-class battle-sprite sheets (Warrior, Dark Bishop); profile link not captured in snapshots (unverified)."
+ },
+ {
+  "name": "Lexou Duck",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Map Sprites sheet",
+    "url": "https://www.spriters-resource.com/game_boy_advance/fireemblemtheblazingblade/asset/47384/"
+   },
+   {
+    "label": "Generic Class Cards sheet",
+    "url": "https://www.spriters-resource.com/game_boy_advance/fireemblemtheblazingblade/asset/47209/"
+   },
+   {
+    "label": "Hit Effects sheet",
+    "url": "https://www.spriters-resource.com/game_boy_advance/fireemblemtheblazingblade/asset/47287/"
+   }
+  ],
+  "note": "Credited contributor on FE7's core UI/map rips (map sprites, class cards, hit effects) on TSR; profile link not captured in snapshots (unverified)."
+ },
+ {
+  "name": "Zephiel87",
+  "nativeName": null,
+  "category": "artist",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": null,
+  "links": [
+   {
+    "label": "Chapter 01 map sheet",
+    "url": "https://www.spriters-resource.com/game_boy_advance/fireemblemtheblazingblade/asset/14142/"
+   }
+  ],
+  "note": "TSR contributor behind the FE7 chapter-map sheet series (Prologue through the endgame chapters); profile link not captured in snapshots (unverified)."
+ },
+ {
+  "name": "Troubadour776",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "Bard (Thracia 776)",
+  "links": [
+   {
+    "label": "Sheet",
+    "url": "https://www.spriters-resource.com/snes/fireemblemthracia776/asset/503962/"
+   }
+  ],
+  "note": "Recent TSR uploader of the FE5 Bard class sheet; handle itself is a Thracia 776 reference (unverified)."
+ },
+ {
+  "name": "Kojjiro",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe5"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "Leif (Thracia 776)",
+  "links": [
+   {
+    "label": "Sheet",
+    "url": "https://www.spriters-resource.com/snes/fireemblemthracia776/asset/203/"
+   }
+  ],
+  "note": "Credited contributor on TSR's FE5 Leif battle-sprite sheet, one of the site's oldest Thracia rips (unverified)."
+ },
+ {
+  "name": "sarpyuce",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "Magic Seal (Kishuna)",
+  "links": [
+   {
+    "label": "Sheet",
+    "url": "https://www.spriters-resource.com/game_boy_advance/fireemblemtheblazingblade/asset/81881/"
+   },
+   {
+    "label": "TSR profile",
+    "url": "https://www.spriters-resource.com/profile/sarpyuce/"
+   }
+  ],
+  "note": "Uploaded the FE7 Magic Seal (Kishuna) sheet in 2016, with ChaosSlicer credited as contributor."
+ },
+ {
+  "name": "Kabs",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "Preparation Background",
+  "links": [
+   {
+    "label": "Sheet",
+    "url": "https://www.spriters-resource.com/game_boy_advance/fireemblemtheblazingblade/asset/255175/"
+   },
+   {
+    "label": "TSR profile",
+    "url": "https://www.spriters-resource.com/profile/kabs/"
+   }
+  ],
+  "note": "TSR uploader of the FE7 battle-preparations background rip."
+ },
+ {
+  "name": "Jeroto",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "Battle Platforms",
+  "links": [
+   {
+    "label": "Sheet",
+    "url": "https://www.spriters-resource.com/game_boy_advance/fireemblemtheblazingblade/asset/479869/"
+   },
+   {
+    "label": "TSR profile",
+    "url": "https://www.spriters-resource.com/profile/jeroto/"
+   }
+  ],
+  "note": "TSR uploader of FE7's battle-platform terrain graphics, one of the newest additions to the page."
+ },
+ {
+  "name": "Indogutsu Tenbuki",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "Item Icons",
+  "links": [
+   {
+    "label": "Sheet",
+    "url": "https://www.spriters-resource.com/game_boy_advance/fireemblemtheblazingblade/asset/19336/"
+   }
+  ],
+  "note": "TSR uploader of the FE7 item-icon sheet (25k+ hits); profile link not captured in snapshots (unverified)."
+ },
+ {
+  "name": "LS",
+  "nativeName": null,
+  "category": "single",
+  "games": [
+   "fe7"
+  ],
+  "style": "pixel",
+  "deceased": false,
+  "singleTitle": "Athos (battle animations)",
+  "links": [
+   {
+    "label": "Sheet",
+    "url": "https://www.spriters-resource.com/game_boy_advance/fireemblemtheblazingblade/asset/14096/"
+   }
+  ],
+  "note": "Credited contributor on the FE7 Athos battle-animation sheet on TSR; profile link not captured in snapshots (unverified)."
+ }
+];
+
+/* ---------- state ---------- */
+const CATEGORIES = [
+  { key: "official",  label: "Official Team" },
+  { key: "artist",    label: "Artists" },
+  { key: "single",    label: "Single Posts" },
+  { key: "community", label: "Communities" }
+];
+const GAME_LABEL = { fe7: "Blazing Blade", fe5: "Thracia 776" };
+const SORTS = [
+  { key: "az",  label: "A–Z" },
+  { key: "za",  label: "Z–A" },
+  { key: "fav", label: "Favorites first then A–Z" }
+];
+
+let state = {
+  category: null,        // null = all categories
+  game: null,            // null = both games
+  favsOnly: false,
+  sort: "az",
+  favs: new Set(JSON.parse(localStorage.getItem("fe-artist-favs") || "[]"))
+};
+
+const idOf = e => (e.category + ":" + e.name + (e.singleTitle ? ":" + e.singleTitle : "")).toLowerCase();
+
+function saveFavs() {
+  localStorage.setItem("fe-artist-favs", JSON.stringify([...state.favs]));
+}
+
+/* ---------- filters ---------- */
+function renderFilters() {
+  const f = document.getElementById("filters");
+  f.innerHTML = "";
+  const mk = (label, selected, onClick) => {
+    const s = document.createElement("span");
+    s.className = "u" + (selected ? " selected" : "");
+    s.textContent = label;
+    s.onclick = onClick;
+    f.appendChild(s);
+  };
+  mk("Show all", !state.category && !state.game && !state.favsOnly, () => {
+    state.category = null; state.game = null; state.favsOnly = false; render();
+  });
+  mk("Favorites", state.favsOnly, () => { state.favsOnly = !state.favsOnly; render(); });
+  for (const g of ["fe7", "fe5"]) {
+    mk(GAME_LABEL[g], state.game === g, () => {
+      state.game = state.game === g ? null : g; render();
+    });
+  }
+  for (const c of CATEGORIES) {
+    mk(c.label, state.category === c.key, () => {
+      state.category = state.category === c.key ? null : c.key; render();
+    });
+  }
+}
+
+/* ---------- sort control ---------- */
+function renderSort() {
+  document.getElementById("sortLabel").textContent = SORTS.find(s => s.key === state.sort).label;
+  const box = document.getElementById("sortOptions");
+  box.innerHTML = "";
+  for (const s of SORTS) {
+    const o = document.createElement("span");
+    o.className = "u" + (s.key === state.sort ? " selected" : "");
+    o.textContent = s.label;
+    o.onclick = ev => {
+      ev.stopPropagation();
+      state.sort = s.key;
+      box.classList.remove("open");
+      render();
+    };
+    box.appendChild(o);
+  }
+}
+document.getElementById("sortToggle").onclick = ev => {
+  ev.stopPropagation();
+  document.getElementById("sortOptions").classList.toggle("open");
+};
+document.addEventListener("click", () => document.getElementById("sortOptions").classList.remove("open"));
+
+/* ---------- list ---------- */
+function sortEntries(arr) {
+  const byName = (a, b) => a.name.localeCompare(b.name, "en", { sensitivity: "base" });
+  if (state.sort === "az") return arr.sort(byName);
+  if (state.sort === "za") return arr.sort((a, b) => byName(b, a));
+  return arr.sort((a, b) => {
+    const fa = state.favs.has(idOf(a)) ? 0 : 1;
+    const fb = state.favs.has(idOf(b)) ? 0 : 1;
+    return fa - fb || byName(a, b);
+  });
+}
+
+function entryEl(e) {
+  const id = idOf(e);
+  const div = document.createElement("div");
+  div.className = "entry" + (state.favs.has(id) ? " faved" : "");
+
+  const star = document.createElement("span");
+  star.className = "star";
+  star.textContent = "*";
+  star.title = "favorite";
+  star.onclick = () => {
+    state.favs.has(id) ? state.favs.delete(id) : state.favs.add(id);
+    saveFavs();
+    render();
+  };
+  div.appendChild(star);
+
+  const nameLine = document.createElement("div");
+  nameLine.className = "entry-name";
+  nameLine.textContent = e.category === "single" && e.singleTitle
+    ? "“" + e.singleTitle + "” by " + e.name
+    : e.name;
+  if (e.nativeName) {
+    const nat = document.createElement("span");
+    nat.className = "native";
+    nat.textContent = e.nativeName;
+    nameLine.appendChild(nat);
+  }
+  if (e.deceased) {
+    const d = document.createElement("span");
+    d.className = "dagger";
+    d.textContent = "†";
+    nameLine.appendChild(d);
+  }
+  const tags = [];
+  tags.push(e.games.map(g => GAME_LABEL[g]).join(" · "));
+  if (e.style === "illustration") tags.push("illustration");
+  for (const t of tags) {
+    const tag = document.createElement("span");
+    tag.className = "tag";
+    tag.textContent = t;
+    nameLine.appendChild(tag);
+  }
+  div.appendChild(nameLine);
+
+  if (e.links && e.links.length) {
+    const linksLine = document.createElement("div");
+    linksLine.className = "entry-links";
+    e.links.forEach((l, i) => {
+      if (i > 0) {
+        const sep = document.createElement("span");
+        sep.className = "sep";
+        sep.textContent = "-";
+        linksLine.appendChild(sep);
+      }
+      const a = document.createElement("a");
+      a.className = "u";
+      a.href = l.url;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.textContent = l.label;
+      linksLine.appendChild(a);
+    });
+    div.appendChild(linksLine);
+  }
+
+  if (e.note) {
+    const note = document.createElement("div");
+    note.className = "entry-note";
+    note.textContent = e.note;
+    div.appendChild(note);
+  }
+  return div;
+}
+
+function render() {
+  renderFilters();
+  renderSort();
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+
+  let shown = 0;
+  for (const c of CATEGORIES) {
+    if (state.category && state.category !== c.key) continue;
+    let entries = DATA.filter(e => e.category === c.key);
+    if (state.game) entries = entries.filter(e => e.games.includes(state.game));
+    if (state.favsOnly) entries = entries.filter(e => state.favs.has(idOf(e)));
+    if (!entries.length) continue;
+    sortEntries(entries);
+
+    const h = document.createElement("div");
+    h.className = "section-title";
+    h.textContent = c.label;
+    list.appendChild(h);
+    for (const e of entries) list.appendChild(entryEl(e));
+    shown += entries.length;
+  }
+
+  if (!shown) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = state.favsOnly ? "No favorites yet — hover an entry and click the * to save it." : "Nothing here.";
+    list.appendChild(empty);
+  }
+}
+
+render();
+</script>
+</body>
+</html>
