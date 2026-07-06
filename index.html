@@ -69,6 +69,7 @@
   }
   .filters .u { margin-left: 14px; }
   .filters .u.selected { color: #111; }
+  .filter-row + .filter-row { margin-top: 6px; }
   .sortbar {
     font-size: 13px;
     color: #55534c;
@@ -109,8 +110,9 @@
   .star {
     position: absolute;
     left: 0;
-    top: 8px;
-    font-size: 13px;
+    top: 7px;
+    font-size: 17px;
+    line-height: 1;
     color: #b5b3a8;
     cursor: pointer;
     visibility: hidden;
@@ -5998,10 +6000,16 @@ const SORTS = [
   { key: "fav", label: "Favorites first then A–Z" }
 ];
 
+/*
+ * Filter model: two independent radio groups, always exactly one
+ * selection active in each — no toggles, no hidden combinations.
+ *   view: "all" | "favs" | one category key
+ *   game: "all" | "fe7" | "fe5"
+ * The visible list is simply view ∩ game.
+ */
 let state = {
-  category: null,        // null = all categories
-  game: null,            // null = both games
-  favsOnly: false,
+  view: "all",
+  game: "all",
   sort: "az",
   favs: new Set(JSON.parse(localStorage.getItem("fe-artist-favs") || "[]"))
 };
@@ -6012,30 +6020,42 @@ function saveFavs() {
   localStorage.setItem("fe-artist-favs", JSON.stringify([...state.favs]));
 }
 
-/* ---------- filters ---------- */
+/* ---------- filters: two radio rows (what × game) ---------- */
 function renderFilters() {
   const f = document.getElementById("filters");
   f.innerHTML = "";
-  const mk = (label, selected, onClick) => {
+  const mkRow = () => {
+    const row = document.createElement("div");
+    row.className = "filter-row";
+    f.appendChild(row);
+    return row;
+  };
+  const mk = (row, label, selected, onClick) => {
     const s = document.createElement("span");
     s.className = "u" + (selected ? " selected" : "");
     s.textContent = label;
     s.onclick = onClick;
-    f.appendChild(s);
+    row.appendChild(s);
   };
-  mk("Show all", !state.category && !state.game && !state.favsOnly, () => {
-    state.category = null; state.game = null; state.favsOnly = false; render();
-  });
-  mk("Favorites", state.favsOnly, () => { state.favsOnly = !state.favsOnly; render(); });
-  for (const g of ["fe7", "fe5"]) {
-    mk(GAME_LABEL[g], state.game === g, () => {
-      state.game = state.game === g ? null : g; render();
-    });
+
+  const viewRow = mkRow();
+  const views = [
+    { key: "all",  label: "Show all" },
+    { key: "favs", label: "Favorites" },
+    ...CATEGORIES
+  ];
+  for (const v of views) {
+    mk(viewRow, v.label, state.view === v.key, () => { state.view = v.key; render(); });
   }
-  for (const c of CATEGORIES) {
-    mk(c.label, state.category === c.key, () => {
-      state.category = state.category === c.key ? null : c.key; render();
-    });
+
+  const gameRow = mkRow();
+  const games = [
+    { key: "all", label: "Both games" },
+    { key: "fe7", label: GAME_LABEL.fe7 },
+    { key: "fe5", label: GAME_LABEL.fe5 }
+  ];
+  for (const g of games) {
+    mk(gameRow, g.label, state.game === g.key, () => { state.game = g.key; render(); });
   }
 }
 
@@ -6082,7 +6102,7 @@ function entryEl(e) {
 
   const star = document.createElement("span");
   star.className = "star";
-  star.textContent = "*";
+  star.textContent = state.favs.has(id) ? "★" : "☆";
   star.title = "favorite";
   star.onclick = () => {
     state.favs.has(id) ? state.favs.delete(id) : state.favs.add(id);
@@ -6157,10 +6177,10 @@ function render() {
 
   let shown = 0;
   for (const c of CATEGORIES) {
-    if (state.category && state.category !== c.key) continue;
+    if (state.view !== "all" && state.view !== "favs" && state.view !== c.key) continue;
     let entries = DATA.filter(e => e.category === c.key);
-    if (state.game) entries = entries.filter(e => e.games.includes(state.game));
-    if (state.favsOnly) entries = entries.filter(e => state.favs.has(idOf(e)));
+    if (state.game !== "all") entries = entries.filter(e => e.games.includes(state.game));
+    if (state.view === "favs") entries = entries.filter(e => state.favs.has(idOf(e)));
     if (!entries.length) continue;
     sortEntries(entries);
 
@@ -6175,7 +6195,7 @@ function render() {
   if (!shown) {
     const empty = document.createElement("div");
     empty.className = "empty";
-    empty.textContent = state.favsOnly ? "No favorites yet — hover an entry and click the * to save it." : "Nothing here.";
+    empty.textContent = state.view === "favs" ? "No favorites yet — hover an entry and click the ☆ to save it." : "Nothing here.";
     list.appendChild(empty);
   }
 }
